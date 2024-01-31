@@ -23,6 +23,7 @@ import org.bjtu.compress.orangutan.compressor.OrangutanMpHighCompressor;
 import org.bjtu.compress.orangutan.decompressor.OrangutanMpHighDecompressor;
 
 
+import org.bjtu.compress.orangutan.utils.OrangutanUtils;
 import org.junit.jupiter.api.Test;
 import org.urbcomp.startdb.compress.elf.compressor.*;
 import org.urbcomp.startdb.compress.elf.decompressor.*;
@@ -158,13 +159,16 @@ public class TestCompressor {
                     new OrangutanMpLowCompressor(dataDpMap.get(fileName)),
                     new OrangutanCompressor(dataDpMap.get(fileName)),
                     new OrangutanMpHighCompressor(dataDpMap.get(fileName)),
-                    new OrangutanMBACompressor(dataDpMap.get(fileName), biasMap.get(fileName))
+                    new OrangutanMBACompressor(dataDpMap.get(fileName))
             };
             for (int i = 0; i < compressors.length; i++) {
                 double encodingDuration;
                 double decodingDuration;
                 long start = System.nanoTime();
                 ICompressor compressor = compressors[i];
+                if (i == compressors.length - 1) {
+                    compressor.setBias(OrangutanUtils.getBias(values, dataDpMap.get(fileName)));
+                }
                 for (double value : values) {
                     compressor.addValue(value);
                 }

@@ -10,7 +10,7 @@ public class OrangutanMBAXorComp {
     private boolean first = true;
     private int size;
 
-    private final int bias;
+    private int bias;
     private final static long END_SIGN = Double.doubleToLongBits(Double.NaN);
 
     public final static short[] leadingRepresentation = {0, 0, 0, 0, 0, 0, 0, 0,
@@ -36,10 +36,13 @@ public class OrangutanMBAXorComp {
 
     private final OutputBitStream out;
 
-    public OrangutanMBAXorComp(int bias) {
+    public OrangutanMBAXorComp() {
         out = new OutputBitStream(
                 new byte[10000]);  // for elf, we need one more bit for each at the worst case
         size = 0;
+    }
+
+    public void setBias(int bias) {
         this.bias = bias;
     }
 

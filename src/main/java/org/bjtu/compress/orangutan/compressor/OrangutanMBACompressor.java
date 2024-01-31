@@ -9,9 +9,13 @@ public class OrangutanMBACompressor implements ICompressor {
 
     private final int reservedDpNumber;
 
-    public OrangutanMBACompressor(int dp, int bias) {
-        xorCompressor = new OrangutanMBAXorComp(bias);
+    public OrangutanMBACompressor(int dp) {
+        xorCompressor = new OrangutanMBAXorComp();
         this.reservedDpNumber = OrangutanUtils.getReservedDpNumber(dp);
+    }
+
+    public void setBias(int bias) {
+        xorCompressor.setBias(bias);
     }
 
     public void addValue(double v) {

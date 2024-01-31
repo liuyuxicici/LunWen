@@ -9,19 +9,26 @@ public class ChimpNCompressor implements ICompressor {
         chimpN = new ChimpN(previousValues);
     }
 
-    @Override public void addValue(double v) {
+    @Override
+    public void addValue(double v) {
         chimpN.addValue(v);
     }
 
-    @Override public int getSize() {
+    @Override
+    public int getSize() {
         return chimpN.getSize();
     }
 
-    @Override public byte[] getBytes() {
+    @Override
+    public byte[] getBytes() {
         return chimpN.getOut();
     }
 
-    @Override public void close() {
+    @Override
+    public void close() {
         chimpN.close();
+    }
+
+    public void setBias(int bias) {
     }
 }

@@ -41,4 +41,7 @@ public class OrangutanCompressor implements ICompressor {
     public void close() {
         xorCompressor.close();
     }
+
+    public void setBias(int bias) {
+    }
 }
