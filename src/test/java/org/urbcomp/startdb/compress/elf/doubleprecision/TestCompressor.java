@@ -14,8 +14,10 @@ import org.apache.hadoop.io.compress.CompressionInputStream;
 import org.apache.hadoop.io.compress.CompressionOutputStream;
 
 import org.bjtu.compress.orangutan.compressor.OrangutanCompressor;
+import org.bjtu.compress.orangutan.compressor.OrangutanMBACompressor;
 import org.bjtu.compress.orangutan.decompressor.OrangutanDecompressor;
 import org.bjtu.compress.orangutan.compressor.OrangutanMpLowCompressor;
+import org.bjtu.compress.orangutan.decompressor.OrangutanMBADecompressor;
 import org.bjtu.compress.orangutan.decompressor.OrangutanMpLowDecompressor;
 import org.bjtu.compress.orangutan.compressor.OrangutanMpHighCompressor;
 import org.bjtu.compress.orangutan.decompressor.OrangutanMpHighDecompressor;
@@ -36,6 +38,7 @@ public class TestCompressor {
     private static final String FILE_PATH = "src/test/resources/ElfTestData";
 
     private static final Map<String, Integer> dataDpMap = new HashMap<>();
+    private static final Map<String, Integer> biasMap = new HashMap<>();
 
     static {
         dataDpMap.put("/City-temp.csv", 1);
@@ -51,6 +54,7 @@ public class TestCompressor {
         dataDpMap.put("/Bird-migration.csv", 5);
         dataDpMap.put("/Basel-wind.csv", 8);
         dataDpMap.put("/Basel-temp.csv", 10);
+        dataDpMap.put("/Air-sensor.csv", 16);
 
         dataDpMap.put("/SSD-bench.csv", 1);
         dataDpMap.put("/electric_vehicle_charging.csv", 2);
@@ -58,24 +62,40 @@ public class TestCompressor {
         dataDpMap.put("/City-lat.csv", 4);
         dataDpMap.put("/City-lon.csv", 4);
         dataDpMap.put("/Blockchain-tr.csv", 4);
+
+
+        biasMap.put("/City-temp.csv", 4);
+        biasMap.put("/IR-bio-temp.csv", 1);
+        biasMap.put("/Wind-Speed.csv", 3);
+        biasMap.put("/Stocks-UK.csv", 1);
+        biasMap.put("/Stocks-USA.csv", 2);
+        biasMap.put("/Dew-point-temp.csv", 4);
+        biasMap.put("/PM10-dust.csv", 1);
+        biasMap.put("/Stocks-DE.csv", 3);
+        biasMap.put("/Bitcoin-price.csv", 18);
+        biasMap.put("/Air-pressure.csv", 7);
+        biasMap.put("/Bird-migration.csv", 11);
+        biasMap.put("/Basel-wind.csv", 24);
+        biasMap.put("/Basel-temp.csv", 18);
+        biasMap.put("/Air-sensor.csv", 40);
     }
 
     private static final String[] FILENAMES = {
             //time series
-//            "/City-temp.csv",
-//            "/IR-bio-temp.csv",
-//            "/Dew-point-temp.csv",
-//            "/Wind-Speed.csv",
-//            "/Stocks-UK.csv",
-//            "/Stocks-USA.csv",
-//            "/Stocks-DE.csv",
-//            "/PM10-dust.csv",
+            "/City-temp.csv",
+            "/IR-bio-temp.csv",
+            "/Dew-point-temp.csv",
+            "/Wind-Speed.csv",
+            "/Stocks-UK.csv",
+            "/Stocks-USA.csv",
+            "/Stocks-DE.csv",
+            "/PM10-dust.csv",
             "/Bitcoin-price.csv",
             "/Air-pressure.csv",
             "/Bird-migration.csv",
             "/Basel-temp.csv",
             "/Basel-wind.csv",
-
+            "/Air-sensor.csv",
 //            //normal series
 //            "/SSD-bench.csv",
 //            "/electric_vehicle_charging.csv",
@@ -115,7 +135,7 @@ public class TestCompressor {
     }
 
 
-    private void testELFCompressor(String fileName, Map<String, List<ResultStructure>> resultCompressor) throws FileNotFoundException {
+    private void testELFCompressor(String fileName, Map<String, List<ResultStructure>> resultCompressor) throws IOException {
         FileReader fileReader = new FileReader(FILE_PATH + fileName);
 
         float totalBlocks = 0;
@@ -135,9 +155,10 @@ public class TestCompressor {
 //                    new ChimpNCompressor(128),
 //                    new ElfOnChimpNCompressor(128),
 //                    new ElfCompressor(),
-//                    new OrangutanMpLowCompressor(dataDpMap.get(fileName)),
+                    new OrangutanMpLowCompressor(dataDpMap.get(fileName)),
                     new OrangutanCompressor(dataDpMap.get(fileName)),
-                    new OrangutanMpHighCompressor(dataDpMap.get(fileName))
+                    new OrangutanMpHighCompressor(dataDpMap.get(fileName)),
+                    new OrangutanMBACompressor(dataDpMap.get(fileName), biasMap.get(fileName))
             };
             for (int i = 0; i < compressors.length; i++) {
                 double encodingDuration;
@@ -160,9 +181,10 @@ public class TestCompressor {
 //                        new ChimpNDecompressor(result, 128),
 //                        new ElfOnChimpNDecompressor(result, 128),
 //                        new ElfDecompressor(result),
-//                        new OrangutanMpLowDecompressor(result, dataDpMap.get(fileName)),
+                        new OrangutanMpLowDecompressor(result, dataDpMap.get(fileName)),
                         new OrangutanDecompressor(result, dataDpMap.get(fileName)),
-                        new OrangutanMpHighDecompressor(result, dataDpMap.get(fileName))
+                        new OrangutanMpHighDecompressor(result, dataDpMap.get(fileName)),
+                        new OrangutanMBADecompressor(result, dataDpMap.get(fileName))
                 };
 
                 IDecompressor decompressor = decompressors[i];

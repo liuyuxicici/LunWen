@@ -9,12 +9,14 @@ import java.util.List;
 public class OrangutanDecompressor implements IDecompressor {
     private final OrangutanXORDecompressor xorDecompressor;
     private final long base;
+    private final int dp;
 
     public OrangutanDecompressor(byte[] bytes, int dp) {
         long temp = 1;
         for (int i = 0; i < dp; i++)
             temp *= 10;
         this.base = temp;
+        this.dp = dp;
         xorDecompressor = new OrangutanXORDecompressor(bytes);
     }
 
@@ -22,7 +24,7 @@ public class OrangutanDecompressor implements IDecompressor {
         List<Double> list = new ArrayList<>(1024);
         Double value = xorDecompressor.readValue();
         while (value != null) {
-            if (value != 0.0) {
+            if (dp < 16) {
                 value = Math.round(value * base) * 1.0 / base;
             }
             list.add(value);

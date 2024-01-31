@@ -2,13 +2,15 @@ package org.bjtu.compress.orangutan.xorcompressor;
 
 import gr.aueb.delorean.chimp.OutputBitStream;
 
-public class OrangutanMpHighXorComp {
+public class OrangutanMBAXorComp {
     private int storedLeadingZeros = Integer.MAX_VALUE;
 
     private int storedTrailingZeros = Integer.MAX_VALUE;
     private long storedVal = 0;
     private boolean first = true;
     private int size;
+
+    private final int bias;
     private final static long END_SIGN = Double.doubleToLongBits(Double.NaN);
 
     public final static short[] leadingRepresentation = {0, 0, 0, 0, 0, 0, 0, 0,
@@ -34,10 +36,11 @@ public class OrangutanMpHighXorComp {
 
     private final OutputBitStream out;
 
-    public OrangutanMpHighXorComp() {
+    public OrangutanMBAXorComp(int bias) {
         out = new OutputBitStream(
                 new byte[10000]);  // for elf, we need one more bit for each at the worst case
         size = 0;
+        this.bias = bias;
     }
 
     public OutputBitStream getOutputStream() {
@@ -71,6 +74,7 @@ public class OrangutanMpHighXorComp {
     }
 
     private int writeFirst(long value) {
+        out.writeInt(bias, 6);//6比特存储偏移值
         first = false;
         storedVal = value;
         int trailingZeros = Long.numberOfTrailingZeros(value);
@@ -99,8 +103,8 @@ public class OrangutanMpHighXorComp {
         long xor = storedVal ^ value;
 
         if (xor == 0) {
-            // case 00
-            out.writeInt(0, 2);
+            // case 01
+            out.writeInt(1, 2);
 
             size += 2;
             thisSize += 2;
@@ -109,12 +113,15 @@ public class OrangutanMpHighXorComp {
             int trailingZeros = Long.numberOfTrailingZeros(xor);
 
             if (leadingZeros == storedLeadingZeros && trailingZeros >= storedTrailingZeros) {
-                // case 1
+                // case 00
                 int centerBits = 64 - storedLeadingZeros - storedTrailingZeros;
-                int len = 1 + centerBits;
-
-                out.writeInt(1, 1);
-                out.writeLong(xor >>> storedTrailingZeros, centerBits);
+                int len = 2 + centerBits;
+                if (len > 64) {
+                    out.writeInt(0, 2);
+                    out.writeLong(xor >>> storedTrailingZeros, centerBits);
+                } else {
+                    out.writeLong(xor >>> storedTrailingZeros, len);
+                }
 
                 size += len;
                 thisSize += len;
@@ -123,12 +130,21 @@ public class OrangutanMpHighXorComp {
                 storedTrailingZeros = trailingZeros;
                 int centerBits = 64 - storedLeadingZeros - storedTrailingZeros;
 
-                // case 01
-                out.writeInt((((0x1 << 3) | leadingRepresentation[storedLeadingZeros]) << 6) | (centerBits & 0x3f), 11);
-                out.writeLong(xor >>> (storedTrailingZeros + 1), centerBits - 1);
+                if (centerBits >= bias && centerBits < bias + 8) {
+                    // case 10
+                    out.writeInt((((0x2 << 3) | leadingRepresentation[storedLeadingZeros]) << 3) | ((centerBits - bias + 1) & 0x7), 8);
+                    out.writeLong(xor >>> (storedTrailingZeros + 1), centerBits - 1);
 
-                size += 10 + centerBits;
-                thisSize += 10 + centerBits;
+                    size += 7 + centerBits; //实际是9 + centerBits - 1
+                    thisSize += 7 + centerBits;
+                } else {
+                    // case 11
+                    out.writeInt((((0x3 << 3) | leadingRepresentation[storedLeadingZeros]) << 6) | (centerBits & 0x3f), 11);
+                    out.writeLong(xor >>> (storedTrailingZeros + 1), centerBits - 1);
+
+                    size += 10 + centerBits;
+                    thisSize += 10 + centerBits;
+                }
             }
 
             storedVal = value;

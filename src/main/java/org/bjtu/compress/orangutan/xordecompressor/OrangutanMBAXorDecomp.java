@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrangutanMpHighXorDecomp {
+public class OrangutanMBAXorDecomp {
     private long storedVal = 0;
     private int storedLeadingZeros = Integer.MAX_VALUE;
     private int storedTrailingZeros = Integer.MAX_VALUE;
@@ -15,12 +15,14 @@ public class OrangutanMpHighXorDecomp {
 
     private final InputBitStream in;
 
+    private final int bias;
     private final static long END_SIGN = Double.doubleToLongBits(Double.NaN);
 
     private final static short[] leadingRepresentation = {0, 8, 12, 16, 18, 20, 22, 24};
 
-    public OrangutanMpHighXorDecomp(byte[] bs) {
+    public OrangutanMBAXorDecomp(byte[] bs) throws IOException {
         in = new InputBitStream(bs);
+        bias = in.readInt(6);
     }
 
     public List<Double> getValues() {
@@ -74,19 +76,10 @@ public class OrangutanMpHighXorDecomp {
     private void nextValue() throws IOException {
         long value;
         int centerBits, leadAndCenter;
-        int flag = in.readInt(1);
-        if (flag == 1) {
-            centerBits = 64 - storedLeadingZeros - storedTrailingZeros;
-            value = in.readLong(centerBits) << storedTrailingZeros;
-            value = storedVal ^ value;
-            if (value == END_SIGN) {
-                endOfStream = true;
-            } else {
-                storedVal = value;
-            }
-        } else {
-            flag = in.readInt(1);
-            if (flag == 1) {
+        int flag = in.readInt(2);
+        switch (flag) {
+            case 3:
+                // case 11
                 leadAndCenter = in.readInt(9);
                 storedLeadingZeros = leadingRepresentation[leadAndCenter >>> 6];
                 centerBits = leadAndCenter & 0x3f;
@@ -101,7 +94,41 @@ public class OrangutanMpHighXorDecomp {
                 } else {
                     storedVal = value;
                 }
-            }
+                break;
+            case 2:
+                // case 10
+                leadAndCenter = in.readInt(6);
+                storedLeadingZeros = leadingRepresentation[leadAndCenter >>> 3];
+                centerBits = leadAndCenter & 0x7;
+                if (centerBits == 0) {
+                    centerBits = 8;
+                }
+
+                centerBits += bias - 1;
+
+                storedTrailingZeros = 64 - storedLeadingZeros - centerBits;
+                value = ((in.readLong(centerBits - 1) << 1) + 1) << storedTrailingZeros;
+                value = storedVal ^ value;
+                if (value == END_SIGN) {
+                    endOfStream = true;
+                } else {
+                    storedVal = value;
+                }
+                break;
+            case 1:
+                // case 01, we do nothing, the same value as before
+                break;
+            default:
+                // case 00
+                centerBits = 64 - storedLeadingZeros - storedTrailingZeros;
+                value = in.readLong(centerBits) << storedTrailingZeros;
+                value = storedVal ^ value;
+                if (value == END_SIGN) {
+                    endOfStream = true;
+                } else {
+                    storedVal = value;
+                }
+                break;
         }
     }
 }

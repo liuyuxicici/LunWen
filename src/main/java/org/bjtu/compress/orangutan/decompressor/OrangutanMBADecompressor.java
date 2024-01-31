@@ -1,24 +1,25 @@
 package org.bjtu.compress.orangutan.decompressor;
 
 
-import org.bjtu.compress.orangutan.xordecompressor.OrangutanMpHighXorDecomp;
+import org.bjtu.compress.orangutan.xordecompressor.OrangutanMBAXorDecomp;
 import org.urbcomp.startdb.compress.elf.decompressor.IDecompressor;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrangutanMpHighDecompressor implements IDecompressor {
-    private final OrangutanMpHighXorDecomp xorDecompressor;
+public class OrangutanMBADecompressor implements IDecompressor {
+    private final OrangutanMBAXorDecomp xorDecompressor;
     private final long base;
     private final int dp;
 
-    public OrangutanMpHighDecompressor(byte[] bytes, int dp) {
+    public OrangutanMBADecompressor(byte[] bytes, int dp) throws IOException {
         long temp = 1;
         for (int i = 0; i < dp; i++)
             temp *= 10;
         this.base = temp;
         this.dp = dp;
-        xorDecompressor = new OrangutanMpHighXorDecomp(bytes);
+        xorDecompressor = new OrangutanMBAXorDecomp(bytes);
     }
 
     public List<Double> decompress() {
