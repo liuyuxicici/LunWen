@@ -97,13 +97,13 @@ public class TestCompressor {
             "/Basel-temp.csv",
             "/Basel-wind.csv",
             "/Air-sensor.csv",
-            //normal series
-            "/SSD-bench.csv",
-            "/electric_vehicle_charging.csv",
-            "/Food-price.csv",
-            "/City-lat.csv",
-            "/City-lon.csv",
-            "/Blockchain-tr.csv",
+//            //normal series
+//            "/SSD-bench.csv",
+//            "/electric_vehicle_charging.csv",
+//            "/Food-price.csv",
+//            "/City-lat.csv",
+//            "/City-lon.csv",
+//            "/Blockchain-tr.csv",
     };
     private static final String STORE_RESULT = "src/test/resources/result/result.csv";
 
@@ -115,12 +115,12 @@ public class TestCompressor {
         for (String filename : FILENAMES) {
             Map<String, List<ResultStructure>> result = new HashMap<>();
             testELFCompressor(filename, result);
-            testFPC(filename, result);
-            testSnappy(filename, result);
-            testZstd(filename, result);
-            testLZ4(filename, result);
-            testBrotli(filename, result);
-            testXz(filename, result);
+//            testFPC(filename, result);
+//            testSnappy(filename, result);
+//            testZstd(filename, result);
+//            testLZ4(filename, result);
+//            testBrotli(filename, result);
+//            testXz(filename, result);
             for (Map.Entry<String, List<ResultStructure>> kv : result.entrySet()) {
                 Map<String, ResultStructure> r = new HashMap<>();
                 r.put(kv.getKey(), computeAvg(kv.getValue()));
@@ -148,15 +148,14 @@ public class TestCompressor {
 
         while ((values = fileReader.nextBlock()) != null) {
             totalBlocks += 1;
-            //System.out.printf("-%d-\n", (int) (totalBlocks));
             ICompressor[] compressors = new ICompressor[]{
-                    new GorillaCompressorOS(),
-                    new ElfOnGorillaCompressorOS(),
-                    new ChimpCompressor(),
-                    new ElfOnChimpCompressor(),
-                    new ChimpNCompressor(128),
-                    new ElfOnChimpNCompressor(128),
-                    new ElfCompressor(),
+//                    new GorillaCompressorOS(),
+//                    new ElfOnGorillaCompressorOS(),
+//                    new ChimpCompressor(),
+//                    new ElfOnChimpCompressor(),
+//                    new ChimpNCompressor(128),
+//                    new ElfOnChimpNCompressor(128),
+//                    new ElfCompressor(),
                     new OrangutanMpLowCompressor(dataDpMap.get(fileName)),
                     new OrangutanCompressor(dataDpMap.get(fileName)),
                     new OrangutanMpHighCompressor(dataDpMap.get(fileName)),
@@ -174,17 +173,18 @@ public class TestCompressor {
                     compressor.addValue(value);
                 }
                 compressor.close();
+
                 encodingDuration = System.nanoTime() - start;
 
                 byte[] result = compressor.getBytes();
                 IDecompressor[] decompressors = new IDecompressor[]{
-                        new GorillaDecompressorOS(result),
-                        new ElfOnGorillaDecompressorOS(result),
-                        new ChimpDecompressor(result),
-                        new ElfOnChimpDecompressor(result),
-                        new ChimpNDecompressor(result, 128),
-                        new ElfOnChimpNDecompressor(result, 128),
-                        new ElfDecompressor(result),
+//                        new GorillaDecompressorOS(result),
+//                        new ElfOnGorillaDecompressorOS(result),
+//                        new ChimpDecompressor(result),
+//                        new ElfOnChimpDecompressor(result),
+//                        new ChimpNDecompressor(result, 128),
+//                        new ElfOnChimpNDecompressor(result, 128),
+//                        new ElfDecompressor(result),
                         new OrangutanMpLowDecompressor(result, dataDpMap.get(fileName)),
                         new OrangutanDecompressor(result, dataDpMap.get(fileName)),
                         new OrangutanMpHighDecompressor(result, dataDpMap.get(fileName)),
