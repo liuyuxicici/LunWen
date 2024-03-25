@@ -1,14 +1,11 @@
 package org.bjtu.compress.oran.compressor;
 
 import gr.aueb.delorean.chimp.OutputBitStream;
-import org.bjtu.compress.huffman.HuffmanCoding;
 import org.bjtu.compress.oran.xorcompressor.HuffmanXORCompressor;
 
 
 public class HuffCompressor extends AbstractCompressor {
     private final HuffmanXORCompressor xorCompressor;
-    public HuffmanCoding leadingHuffmanTree = new HuffmanCoding();
-    public HuffmanCoding trailingHuffmanTree = new HuffmanCoding();
 
     public HuffCompressor() {
         xorCompressor = new HuffmanXORCompressor();
@@ -18,6 +15,14 @@ public class HuffCompressor extends AbstractCompressor {
         OutputBitStream os = xorCompressor.getOutputStream();
         os.writeInt(n, len);
         return len;
+    }
+
+    public void compress() {
+        this.xorCompressor.compress();
+    }
+
+    public void getLeadAndTrail() {
+        xorCompressor.leadAndTrailSize();
     }
 
     protected int writeBit(boolean bit) {
@@ -40,29 +45,11 @@ public class HuffCompressor extends AbstractCompressor {
         xorCompressor.close();
     }
 
-    public void buildTree() {
-        leadingHuffmanTree.buildTree(xorCompressor.leadingZerosArray);
-        trailingHuffmanTree.buildTree(xorCompressor.trailingZerosArray);
+    public String getKey() {
+        return getClass().getSimpleName();
     }
 
     public int leadAndTrailSize() {
-        int lead = 0, trail = 0;
-        //计算存储前导零的哈夫曼编码长度
-        for (int i = 0; i < xorCompressor.leadingZerosArray.length; i++) {
-            if (xorCompressor.leadingZerosArray[i] > 0) {
-                lead += xorCompressor.leadingZerosArray[i] * leadingHuffmanTree.symbolToCode.get(i).length();
-            }
-        }
-        //计算存储后导零的哈夫曼编码长度
-        for (int i = 0; i < xorCompressor.trailingZerosArray.length; i++) {
-            if (xorCompressor.trailingZerosArray[i] > 0) {
-                trail += xorCompressor.trailingZerosArray[i] * trailingHuffmanTree.symbolToCode.get(i).length();
-            }
-        }
-        return lead + trail;
-    }
-
-    public String getKey() {
-        return getClass().getSimpleName();
+        return xorCompressor.leadAndTrailSize();
     }
 }

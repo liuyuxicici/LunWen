@@ -191,7 +191,8 @@ public class TestCompressor {
                 compressor.addValue(value);
             }
 
-            compressor.buildTree();
+            compressor.compress();
+
             int LeadingAndTrailing = compressor.leadAndTrailSize();
 
             compressor.close();
