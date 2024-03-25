@@ -13,17 +13,9 @@ import org.apache.hadoop.io.IOUtils;
 import org.apache.hadoop.io.compress.CompressionInputStream;
 import org.apache.hadoop.io.compress.CompressionOutputStream;
 
-import org.bjtu.compress.orangutan.compressor.OrangutanCompressor;
-import org.bjtu.compress.orangutan.compressor.OrangutanMBACompressor;
-import org.bjtu.compress.orangutan.decompressor.OrangutanDecompressor;
-import org.bjtu.compress.orangutan.compressor.OrangutanMpLowCompressor;
-import org.bjtu.compress.orangutan.decompressor.OrangutanMBADecompressor;
-import org.bjtu.compress.orangutan.decompressor.OrangutanMpLowDecompressor;
-import org.bjtu.compress.orangutan.compressor.OrangutanMpHighCompressor;
-import org.bjtu.compress.orangutan.decompressor.OrangutanMpHighDecompressor;
+import org.bjtu.compress.oran.compressor.HuffCompressor;
 
 
-import org.bjtu.compress.orangutan.utils.OrangutanUtils;
 import org.junit.jupiter.api.Test;
 import org.urbcomp.startdb.compress.elf.compressor.*;
 import org.urbcomp.startdb.compress.elf.decompressor.*;
@@ -37,49 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestCompressor {
     private static final String FILE_PATH = "src/test/resources/ElfTestData";
-
-    private static final Map<String, Integer> dataDpMap = new HashMap<>();
-    private static final Map<String, Integer> biasMap = new HashMap<>();
-
-    static {
-        dataDpMap.put("/City-temp.csv", 1);
-        dataDpMap.put("/IR-bio-temp.csv", 2);
-        dataDpMap.put("/Wind-Speed.csv", 2);
-        dataDpMap.put("/Stocks-UK.csv", 2);
-        dataDpMap.put("/Stocks-USA.csv", 2);
-        dataDpMap.put("/Dew-point-temp.csv", 2);
-        dataDpMap.put("/PM10-dust.csv", 3);
-        dataDpMap.put("/Stocks-DE.csv", 3);
-        dataDpMap.put("/Bitcoin-price.csv", 4);
-        dataDpMap.put("/Air-pressure.csv", 5);
-        dataDpMap.put("/Bird-migration.csv", 5);
-        dataDpMap.put("/Basel-wind.csv", 8);
-        dataDpMap.put("/Basel-temp.csv", 10);
-        dataDpMap.put("/Air-sensor.csv", 16);
-
-        dataDpMap.put("/SSD-bench.csv", 1);
-        dataDpMap.put("/electric_vehicle_charging.csv", 2);
-        dataDpMap.put("/Food-price.csv", 4);
-        dataDpMap.put("/City-lat.csv", 4);
-        dataDpMap.put("/City-lon.csv", 4);
-        dataDpMap.put("/Blockchain-tr.csv", 4);
-
-
-        biasMap.put("/City-temp.csv", 4);
-        biasMap.put("/IR-bio-temp.csv", 1);
-        biasMap.put("/Wind-Speed.csv", 3);
-        biasMap.put("/Stocks-UK.csv", 1);
-        biasMap.put("/Stocks-USA.csv", 2);
-        biasMap.put("/Dew-point-temp.csv", 4);
-        biasMap.put("/PM10-dust.csv", 1);
-        biasMap.put("/Stocks-DE.csv", 3);
-        biasMap.put("/Bitcoin-price.csv", 18);
-        biasMap.put("/Air-pressure.csv", 7);
-        biasMap.put("/Bird-migration.csv", 11);
-        biasMap.put("/Basel-wind.csv", 24);
-        biasMap.put("/Basel-temp.csv", 18);
-        biasMap.put("/Air-sensor.csv", 40);
-    }
 
     private static final String[] FILENAMES = {
             //time series
@@ -114,13 +63,15 @@ public class TestCompressor {
     public void testCompressor() throws IOException {
         for (String filename : FILENAMES) {
             Map<String, List<ResultStructure>> result = new HashMap<>();
+            System.out.println(filename);
             testELFCompressor(filename, result);
-//            testFPC(filename, result);
-//            testSnappy(filename, result);
-//            testZstd(filename, result);
-//            testLZ4(filename, result);
-//            testBrotli(filename, result);
-//            testXz(filename, result);
+            testHuffCompressor(filename, result);
+            testFPC(filename, result);
+            testSnappy(filename, result);
+            testZstd(filename, result);
+            testLZ4(filename, result);
+            testBrotli(filename, result);
+            testXz(filename, result);
             for (Map.Entry<String, List<ResultStructure>> kv : result.entrySet()) {
                 Map<String, ResultStructure> r = new HashMap<>();
                 r.put(kv.getKey(), computeAvg(kv.getValue()));
@@ -146,49 +97,41 @@ public class TestCompressor {
         HashMap<String, List<Double>> totalDecompressionTime = new HashMap<>();
         HashMap<String, Long> key2TotalSize = new HashMap<>();
 
+
         while ((values = fileReader.nextBlock()) != null) {
             totalBlocks += 1;
             ICompressor[] compressors = new ICompressor[]{
-//                    new GorillaCompressorOS(),
+                    new GorillaCompressorOS(),
 //                    new ElfOnGorillaCompressorOS(),
-//                    new ChimpCompressor(),
+                    new ChimpCompressor(),
 //                    new ElfOnChimpCompressor(),
-//                    new ChimpNCompressor(128),
+                    new ChimpNCompressor(128),
 //                    new ElfOnChimpNCompressor(128),
-//                    new ElfCompressor(),
-                    new OrangutanMpLowCompressor(dataDpMap.get(fileName)),
-                    new OrangutanCompressor(dataDpMap.get(fileName)),
-                    new OrangutanMpHighCompressor(dataDpMap.get(fileName)),
-                    new OrangutanMBACompressor(dataDpMap.get(fileName))
+                    new ElfCompressor(),
             };
             for (int i = 0; i < compressors.length; i++) {
                 double encodingDuration;
                 double decodingDuration;
                 long start = System.nanoTime();
                 ICompressor compressor = compressors[i];
-                if (i == compressors.length - 1) {
-                    compressor.setBias(OrangutanUtils.getBias(values, dataDpMap.get(fileName)));
-                }
                 for (double value : values) {
                     compressor.addValue(value);
                 }
+
+
                 compressor.close();
 
                 encodingDuration = System.nanoTime() - start;
 
                 byte[] result = compressor.getBytes();
                 IDecompressor[] decompressors = new IDecompressor[]{
-//                        new GorillaDecompressorOS(result),
+                        new GorillaDecompressorOS(result),
 //                        new ElfOnGorillaDecompressorOS(result),
-//                        new ChimpDecompressor(result),
+                        new ChimpDecompressor(result),
 //                        new ElfOnChimpDecompressor(result),
-//                        new ChimpNDecompressor(result, 128),
+                        new ChimpNDecompressor(result, 128),
 //                        new ElfOnChimpNDecompressor(result, 128),
-//                        new ElfDecompressor(result),
-                        new OrangutanMpLowDecompressor(result, dataDpMap.get(fileName)),
-                        new OrangutanDecompressor(result, dataDpMap.get(fileName)),
-                        new OrangutanMpHighDecompressor(result, dataDpMap.get(fileName)),
-                        new OrangutanMBADecompressor(result, dataDpMap.get(fileName))
+                        new ElfDecompressor(result),
                 };
 
                 IDecompressor decompressor = decompressors[i];
@@ -211,6 +154,61 @@ public class TestCompressor {
                 totalDecompressionTime.get(key).add(decodingDuration / TIME_PRECISION);
                 key2TotalSize.put(key, compressor.getSize() + key2TotalSize.get(key));
             }
+        }
+        //printMap(mp);
+        for (Map.Entry<String, Long> kv : key2TotalSize.entrySet()) {
+            String key = kv.getKey();
+            Long totalSize = kv.getValue();
+            ResultStructure r = new ResultStructure(fileName, key,
+                    totalSize / (totalBlocks * FileReader.DEFAULT_BLOCK_SIZE * 64.0),
+                    totalCompressionTime.get(key),
+                    totalDecompressionTime.get(key)
+            );
+            if (!resultCompressor.containsKey(key)) {
+                resultCompressor.put(key, new ArrayList<>());
+            }
+            resultCompressor.get(key).add(r);
+        }
+    }
+
+    private void testHuffCompressor(String fileName, Map<String, List<ResultStructure>> resultCompressor) throws IOException {
+        FileReader fileReader = new FileReader(FILE_PATH + fileName);
+
+        float totalBlocks = 0;
+        double[] values;
+
+        HashMap<String, List<Double>> totalCompressionTime = new HashMap<>();
+        HashMap<String, List<Double>> totalDecompressionTime = new HashMap<>();
+        HashMap<String, Long> key2TotalSize = new HashMap<>();
+
+        while ((values = fileReader.nextBlock()) != null) {
+            totalBlocks += 1;
+            HuffCompressor compressor = new HuffCompressor();
+            double encodingDuration;
+            double decodingDuration;
+            long start = System.nanoTime();
+            for (double value : values) {
+                compressor.addValue(value);
+            }
+
+            compressor.buildTree();
+            int LeadingAndTrailing = compressor.leadAndTrailSize();
+
+            compressor.close();
+
+            encodingDuration = System.nanoTime() - start;
+
+            start = System.nanoTime();
+            decodingDuration = System.nanoTime() - start;
+            String key = compressor.getKey();
+            if (!totalCompressionTime.containsKey(key)) {
+                totalCompressionTime.put(key, new ArrayList<>());
+                totalDecompressionTime.put(key, new ArrayList<>());
+                key2TotalSize.put(key, 0L);
+            }
+            totalCompressionTime.get(key).add(encodingDuration / TIME_PRECISION);
+            totalDecompressionTime.get(key).add(decodingDuration / TIME_PRECISION);
+            key2TotalSize.put(key, compressor.getSize() + LeadingAndTrailing + key2TotalSize.get(key));
         }
         for (Map.Entry<String, Long> kv : key2TotalSize.entrySet()) {
             String key = kv.getKey();

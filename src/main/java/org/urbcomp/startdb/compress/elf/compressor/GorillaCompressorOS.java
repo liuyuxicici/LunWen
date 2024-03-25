@@ -2,8 +2,12 @@ package org.urbcomp.startdb.compress.elf.compressor;
 
 import fi.iki.yak.ts.compression.gorilla.CompressorOS;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class GorillaCompressorOS implements ICompressor {
     private final CompressorOS gorilla;
+
 
     public GorillaCompressorOS() {
         this.gorilla = new CompressorOS();
@@ -28,7 +32,9 @@ public class GorillaCompressorOS implements ICompressor {
     public void close() {
         this.gorilla.close();
     }
-
-    public void setBias(int bias) {
+    
+    @Override
+    public Map<Integer, Integer> getMap() {
+        return gorilla.getMap();
     }
 }

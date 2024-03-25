@@ -3,6 +3,8 @@ package org.urbcomp.startdb.compress.elf.compressor;
 import gr.aueb.delorean.chimp.OutputBitStream;
 import org.urbcomp.startdb.compress.elf.xorcompressor.ElfXORCompressor;
 
+import java.util.Map;
+
 public class ElfCompressor extends AbstractElfCompressor {
     private final ElfXORCompressor xorCompressor;
 
@@ -41,7 +43,9 @@ public class ElfCompressor extends AbstractElfCompressor {
         xorCompressor.close();
     }
 
-    public void setBias(int bias) {
+    @Override
+    public Map<Integer, Integer> getMap() {
+        xorCompressor.calTotal();
+        return xorCompressor.getLeading();
     }
-
 }

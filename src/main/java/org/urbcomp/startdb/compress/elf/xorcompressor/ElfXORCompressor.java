@@ -2,7 +2,13 @@ package org.urbcomp.startdb.compress.elf.xorcompressor;
 
 import gr.aueb.delorean.chimp.OutputBitStream;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public class ElfXORCompressor {
+
+    public long centerTotal = 0;
     private int storedLeadingZeros = Integer.MAX_VALUE;
 
     private int storedTrailingZeros = Integer.MAX_VALUE;
@@ -12,32 +18,42 @@ public class ElfXORCompressor {
     private final static long END_SIGN = Double.doubleToLongBits(Double.NaN);
 
     public final static short[] leadingRepresentation = {0, 0, 0, 0, 0, 0, 0, 0,
-                    1, 1, 1, 1, 2, 2, 2, 2,
-                    3, 3, 4, 4, 5, 5, 6, 6,
-                    7, 7, 7, 7, 7, 7, 7, 7,
-                    7, 7, 7, 7, 7, 7, 7, 7,
-                    7, 7, 7, 7, 7, 7, 7, 7,
-                    7, 7, 7, 7, 7, 7, 7, 7,
-                    7, 7, 7, 7, 7, 7, 7, 7
+            1, 1, 1, 1, 2, 2, 2, 2,
+            3, 3, 4, 4, 5, 5, 6, 6,
+            7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7, 7, 7, 7, 7, 7
     };
 
     public final static short[] leadingRound = {0, 0, 0, 0, 0, 0, 0, 0,
-                    8, 8, 8, 8, 12, 12, 12, 12,
-                    16, 16, 18, 18, 20, 20, 22, 22,
-                    24, 24, 24, 24, 24, 24, 24, 24,
-                    24, 24, 24, 24, 24, 24, 24, 24,
-                    24, 24, 24, 24, 24, 24, 24, 24,
-                    24, 24, 24, 24, 24, 24, 24, 24,
-                    24, 24, 24, 24, 24, 24, 24, 24
+            8, 8, 8, 8, 12, 12, 12, 12,
+            16, 16, 18, 18, 20, 20, 22, 22,
+            24, 24, 24, 24, 24, 24, 24, 24,
+            24, 24, 24, 24, 24, 24, 24, 24,
+            24, 24, 24, 24, 24, 24, 24, 24,
+            24, 24, 24, 24, 24, 24, 24, 24,
+            24, 24, 24, 24, 24, 24, 24, 24
     };
     //    public final static short FIRST_DELTA_BITS = 27;
+
+    private Map<Integer, Integer> leadingMap = new HashMap<>();
 
     private final OutputBitStream out;
 
     public ElfXORCompressor() {
         out = new OutputBitStream(
-                        new byte[10000]);  // for elf, we need one more bit for each at the worst case
+                new byte[10000]);  // for elf, we need one more bit for each at the worst case
         size = 0;
+    }
+
+    public Map<Integer, Integer> getLeading() {
+        return Collections.unmodifiableMap(leadingMap);
+    }
+
+    public void calTotal() {
+        leadingMap.put((int) centerTotal, (int) centerTotal);
     }
 
     public OutputBitStream getOutputStream() {
@@ -104,15 +120,21 @@ public class ElfXORCompressor {
 
             size += 2;
             thisSize += 2;
+
+            //leadingMap.put(64, leadingMap.get(64) + 1);
         } else {
             int leadingZeros = leadingRound[Long.numberOfLeadingZeros(xor)];
             int trailingZeros = Long.numberOfTrailingZeros(xor);
+
+            int myLead = Long.numberOfLeadingZeros(xor);
+            centerTotal += 64 - myLead - trailingZeros - 2;
+
 
             if (leadingZeros == storedLeadingZeros && trailingZeros >= storedTrailingZeros) {
                 // case 00
                 int centerBits = 64 - storedLeadingZeros - storedTrailingZeros;
                 int len = 2 + centerBits;
-                if(len > 64) {
+                if (len > 64) {
                     out.writeInt(0, 2);
                     out.writeLong(xor >>> storedTrailingZeros, centerBits);
                 } else {
@@ -130,6 +152,7 @@ public class ElfXORCompressor {
                     // case 10
                     out.writeInt((((0x2 << 3) | leadingRepresentation[storedLeadingZeros]) << 4) | (centerBits & 0xf), 9);
                     out.writeLong(xor >>> (storedTrailingZeros + 1), centerBits - 1);
+
 
                     size += 8 + centerBits;
                     thisSize += 8 + centerBits;

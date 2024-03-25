@@ -3,8 +3,15 @@ package org.urbcomp.startdb.compress.elf.compressor;
 import fi.iki.yak.ts.compression.gorilla.CompressorOS;
 import gr.aueb.delorean.chimp.OutputBitStream;
 
+import java.util.Map;
+
 public class ElfOnGorillaCompressorOS extends AbstractElfCompressor {
     private final CompressorOS gorilla;
+
+    @Override
+    public Map<Integer, Integer> getMap() {
+        return null;
+    }
 
     public ElfOnGorillaCompressorOS() {
         gorilla = new CompressorOS();

@@ -2,6 +2,11 @@ package fi.iki.yak.ts.compression.gorilla;
 
 import gr.aueb.delorean.chimp.OutputBitStream;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public class CompressorOS {
     private int storedLeadingZeros = Integer.MAX_VALUE;
     private int storedTrailingZeros = 0;
@@ -12,9 +17,19 @@ public class CompressorOS {
 
     private final OutputBitStream out;
 
+
+    private Map<Integer, Integer> centerBitsMap = new HashMap<>();
+
     public CompressorOS() {
         out = new OutputBitStream(new byte[10000]);
         size = 0;
+        for (int i = 0; i < 64; i++) {
+            centerBitsMap.put(i, 0);
+        }
+    }
+
+    public Map<Integer, Integer> getMap() {
+        return Collections.unmodifiableMap(centerBitsMap);
     }
 
     public OutputBitStream getOutputStream() {
@@ -129,8 +144,10 @@ public class CompressorOS {
         int significantBits = 64 - leadingZeros - trailingZeros;
         if (significantBits == 64) {
             out.writeInt(0, 6); // Length of meaningful bits in the next 6 bits
+            centerBitsMap.put(0, centerBitsMap.get(0) + 1);
         } else {
             out.writeInt(significantBits, 6); // Length of meaningful bits in the next 6 bits
+            centerBitsMap.put(significantBits, centerBitsMap.get(significantBits) + 1);
         }
 
         out.writeLong(xor >>> trailingZeros, significantBits); // Store the meaningful bits of XOR

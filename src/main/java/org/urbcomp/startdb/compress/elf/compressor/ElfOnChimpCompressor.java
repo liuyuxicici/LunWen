@@ -3,8 +3,15 @@ package org.urbcomp.startdb.compress.elf.compressor;
 import gr.aueb.delorean.chimp.Chimp;
 import gr.aueb.delorean.chimp.OutputBitStream;
 
+import java.util.Map;
+
 public class ElfOnChimpCompressor extends AbstractElfCompressor {
     private final Chimp chimp;
+
+    @Override
+    public Map<Integer, Integer> getMap() {
+        return null;
+    }
 
     public ElfOnChimpCompressor() {
         chimp = new Chimp();

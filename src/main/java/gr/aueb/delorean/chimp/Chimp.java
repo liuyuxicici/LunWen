@@ -1,5 +1,9 @@
 package gr.aueb.delorean.chimp;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Implements the Chimp time series compression. Value compression
  * is for floating points only.
@@ -8,6 +12,7 @@ package gr.aueb.delorean.chimp;
  */
 public class Chimp {
 
+    private Map<Integer, Integer> centerBitsMap = new HashMap<>();
     private int storedLeadingZeros = Integer.MAX_VALUE;
     private long storedVal = 0;
     private boolean first = true;
@@ -42,8 +47,15 @@ public class Chimp {
     public Chimp() {
         out = new OutputBitStream(new byte[10000]);  // for elf, we need one more bit for each at the worst case
         size = 0;
+        for (int i = 0; i < 64; i++) {
+            centerBitsMap.put(i, 0);
+        }
     }
 
+    public Map<Integer, Integer> getMap() {
+        return Collections.unmodifiableMap(centerBitsMap);
+    }
+    
     public OutputBitStream getOutputStream() {
         return this.out;
     }
@@ -54,7 +66,7 @@ public class Chimp {
      * @param value next floating point value in the series
      */
     public int addValue(long value) {
-        if(first) {
+        if (first) {
             return writeFirst(value);
         } else {
             return compressValue(value);
@@ -67,7 +79,7 @@ public class Chimp {
      * @param value next floating point value in the series
      */
     public int addValue(double value) {
-        if(first) {
+        if (first) {
             return writeFirst(Double.doubleToRawLongBits(value));
         } else {
             return compressValue(Double.doubleToRawLongBits(value));
@@ -94,7 +106,7 @@ public class Chimp {
     private int compressValue(long value) {
         int thisSize = 0;
         long xor = storedVal ^ value;
-        if(xor == 0) {
+        if (xor == 0) {
             // Write 0
             out.writeBit(false);
             out.writeBit(false);
@@ -111,6 +123,7 @@ public class Chimp {
                 out.writeBit(true);
                 out.writeInt(leadingRepresentation[leadingZeros], 3);
                 out.writeInt(significantBits, 6);
+                centerBitsMap.put(significantBits, centerBitsMap.get(significantBits) + 1);
                 out.writeLong(xor >>> trailingZeros, significantBits); // Store the meaningful bits of XOR
                 size += 11 + significantBits;
                 thisSize += 11 + significantBits;

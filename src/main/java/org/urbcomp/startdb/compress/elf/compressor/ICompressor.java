@@ -1,5 +1,7 @@
 package org.urbcomp.startdb.compress.elf.compressor;
 
+import java.util.Map;
+
 public interface ICompressor {
     void addValue(double v);
 
@@ -13,5 +15,5 @@ public interface ICompressor {
         return getClass().getSimpleName();
     }
 
-    void setBias(int bias);
+    Map<Integer, Integer> getMap();
 }

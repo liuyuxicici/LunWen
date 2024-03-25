@@ -2,6 +2,8 @@ package org.urbcomp.startdb.compress.elf.compressor;
 
 import gr.aueb.delorean.chimp.Chimp;
 
+import java.util.Map;
+
 public class ChimpCompressor implements ICompressor {
     private final Chimp chimp;
 
@@ -29,6 +31,8 @@ public class ChimpCompressor implements ICompressor {
         chimp.close();
     }
 
-    public void setBias(int bias) {
+    @Override
+    public Map<Integer, Integer> getMap() {
+        return chimp.getMap();
     }
 }

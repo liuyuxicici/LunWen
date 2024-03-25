@@ -1,5 +1,9 @@
 package gr.aueb.delorean.chimp;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Implements the Chimp128 time series compression. Value compression
  * is for floating points only.
@@ -47,21 +51,31 @@ public class ChimpN {
     private int flagOneSize;
     private int flagZeroSize;
 
+    private Map<Integer, Integer> centerBitsMap = new HashMap<>();
+
     // We should have access to the series?
     public ChimpN(int previousValues) {
 //        out = output;
         out = new OutputBitStream(new byte[10000]); // for elf, we need one more bit for each at the worst case
         size = 0;
         this.previousValues = previousValues;
-        this.previousValuesLog2 =  (int)(Math.log(previousValues) / Math.log(2));
+        this.previousValuesLog2 = (int) (Math.log(previousValues) / Math.log(2));
         this.threshold = 6 + previousValuesLog2;
         this.setLsb = (int) Math.pow(2, threshold + 1) - 1;
         this.indices = new int[(int) Math.pow(2, threshold + 1)];
         this.storedValues = new long[previousValues];
         this.flagZeroSize = previousValuesLog2 + 2;
         this.flagOneSize = previousValuesLog2 + 11;
+
+        for (int i = 0; i < 64; i++) {
+            centerBitsMap.put(i, 0);
+        }
     }
 
+    public Map<Integer, Integer> getMap() {
+        return Collections.unmodifiableMap(centerBitsMap);
+    }
+    
     public OutputBitStream getOutputStream() {
         return out;
     }
@@ -76,7 +90,7 @@ public class ChimpN {
      * @param value next floating point value in the series
      */
     public int addValue(long value) {
-        if(first) {
+        if (first) {
             return writeFirst(value);
         } else {
             return compressValue(value);
@@ -89,7 +103,7 @@ public class ChimpN {
      * @param value next floating point value in the series
      */
     public int addValue(double value) {
-        if(first) {
+        if (first) {
             return writeFirst(Double.doubleToRawLongBits(value));
         } else {
             return compressValue(Double.doubleToRawLongBits(value));
@@ -128,15 +142,15 @@ public class ChimpN {
                 previousIndex = currIndex % previousValues;
                 xor = tempXor;
             } else {
-                previousIndex =  index % previousValues;
+                previousIndex = index % previousValues;
                 xor = storedValues[previousIndex] ^ value;
             }
         } else {
-            previousIndex =  index % previousValues;
+            previousIndex = index % previousValues;
             xor = storedValues[previousIndex] ^ value;
         }
 
-        if(xor == 0) {
+        if (xor == 0) {
             out.writeInt(previousIndex, this.flagZeroSize);
             size += this.flagZeroSize;
             thisSize += this.flagZeroSize;
@@ -149,6 +163,7 @@ public class ChimpN {
                 out.writeInt(512 * (previousValues + previousIndex) + 64 * leadingRepresentation[leadingZeros] + significantBits, this.flagOneSize);
                 out.writeLong(xor >>> trailingZeros, significantBits); // Store the meaningful bits of XOR
                 size += significantBits + this.flagOneSize;
+                centerBitsMap.put(significantBits, centerBitsMap.get(significantBits) + 1);
                 thisSize += significantBits + this.flagOneSize;
                 storedLeadingZeros = 65;
             } else if (leadingZeros == storedLeadingZeros) {
