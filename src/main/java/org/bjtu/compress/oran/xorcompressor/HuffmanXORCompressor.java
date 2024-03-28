@@ -2,6 +2,7 @@ package org.bjtu.compress.oran.xorcompressor;
 
 import gr.aueb.delorean.chimp.OutputBitStream;
 import org.bjtu.compress.huffman.HuffmanCoding;
+import org.bjtu.compress.oran.utils.Elf64Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,8 @@ public class HuffmanXORCompressor {
     private StringBuilder lead_compress_res = new StringBuilder();
     private StringBuilder trail_compress_res = new StringBuilder();
 
+    private int centerTotal = 0;
+
 
     public HuffmanXORCompressor() {
         out = new OutputBitStream(
@@ -36,6 +39,7 @@ public class HuffmanXORCompressor {
         long xor = value ^ storedVal;
         int leadingZeros = Long.numberOfLeadingZeros(xor);
         int TrailingZeros = Long.numberOfTrailingZeros(xor);
+
         if (leadingZeros == 64) {
             lead_raws.add(64);//保留前导零结果
             leadFrequencies[64] += 1;
@@ -49,7 +53,7 @@ public class HuffmanXORCompressor {
             centerOut.writeLong(xor >> (TrailingZeros + 1), center - 1);//写入中心位
             thisSize += center >= 2 ? center - 2 : center;
         }
-
+        centerTotal += thisSize;
         size += thisSize;
         storedVal = value;
         return thisSize;
@@ -60,20 +64,35 @@ public class HuffmanXORCompressor {
         trailingHuffmanTree.buildTree(trailFrequencies);
     }
 
+    public int getHuffLength() {
+        int lead_total = 0;
+        int trail_total = 0;
+        for (int i = 0; i < 65; i++) {
+            lead_total += Elf64Utils.getLength(leadFrequencies[i]);
+            trail_total += Elf64Utils.getLength(trailFrequencies[i]);
+        }
+        return lead_total + trail_total;
+    }
+
     public void compress() {
         buildTree();
-
         for (Integer lead : lead_raws) {
             lead_compress_res.append(leadingHuffmanTree.symbolToCode.get(lead));
         }
         for (Integer trail : trail_raws) {
             trail_compress_res.append(trailingHuffmanTree.symbolToCode.get(trail));
         }
-        System.out.println("lead_total:" + lead_compress_res.length() + ",trail_total:" + trail_compress_res.length());
     }
 
     public int leadAndTrailSize() {
         return lead_compress_res.length() + trail_compress_res.length();
+    }
+
+    public int getVarint() {
+        return Elf64Utils.getLength(lead_compress_res.length()) +
+                +Elf64Utils.getLength(centerTotal) +
+                Elf64Utils.getLength(trail_compress_res.length()) +
+                getHuffLength();
     }
 
     public int addValue(double value) {

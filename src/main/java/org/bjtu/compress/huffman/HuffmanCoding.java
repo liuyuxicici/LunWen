@@ -52,6 +52,7 @@ public class HuffmanCoding {
             generateCode(root, new StringBuilder());
         }
     }
+    
 
     private void generateCode(HuffmanNode node, StringBuilder prefix) {
         if (node != null) {

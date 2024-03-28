@@ -101,10 +101,16 @@ public class ElfXORCompressor {
         }
     }
 
+    int[] temp = new int[4];
+
     /**
      * Closes the block and writes the remaining stuff to the BitOutput.
      */
     public void close() {
+//        System.out.println("zzs");
+//        for (int i = 0; i < temp.length; i++) {
+//            System.out.println(i + "," + temp[i]);
+//        }
         addValue(END_SIGN);
         out.writeBit(false);
         out.flush();
@@ -117,7 +123,7 @@ public class ElfXORCompressor {
         if (xor == 0) {
             // case 01
             out.writeInt(1, 2);
-
+            temp[1]++;
             size += 2;
             thisSize += 2;
 
@@ -132,6 +138,7 @@ public class ElfXORCompressor {
 
             if (leadingZeros == storedLeadingZeros && trailingZeros >= storedTrailingZeros) {
                 // case 00
+                temp[0]++;
                 int centerBits = 64 - storedLeadingZeros - storedTrailingZeros;
                 int len = 2 + centerBits;
                 if (len > 64) {
@@ -150,6 +157,7 @@ public class ElfXORCompressor {
 
                 if (centerBits <= 16) {
                     // case 10
+                    temp[2]++;
                     out.writeInt((((0x2 << 3) | leadingRepresentation[storedLeadingZeros]) << 4) | (centerBits & 0xf), 9);
                     out.writeLong(xor >>> (storedTrailingZeros + 1), centerBits - 1);
 
@@ -158,6 +166,7 @@ public class ElfXORCompressor {
                     thisSize += 8 + centerBits;
                 } else {
                     // case 11
+                    temp[3]++;
                     out.writeInt((((0x3 << 3) | leadingRepresentation[storedLeadingZeros]) << 6) | (centerBits & 0x3f), 11);
                     out.writeLong(xor >>> (storedTrailingZeros + 1), centerBits - 1);
 

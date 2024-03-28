@@ -21,6 +21,10 @@ public class HuffCompressor extends AbstractCompressor {
         this.xorCompressor.compress();
     }
 
+    public int getVarint() {
+        return this.xorCompressor.getVarint();
+    }
+
     public void getLeadAndTrail() {
         xorCompressor.leadAndTrailSize();
     }

@@ -81,7 +81,7 @@ public class ElfXORDecompressor {
                 leadAndCenter = in.readInt(9);
                 storedLeadingZeros = leadingRepresentation[leadAndCenter >>> 6];
                 centerBits = leadAndCenter & 0x3f;
-                if(centerBits == 0) {
+                if (centerBits == 0) {
                     centerBits = 64;
                 }
                 storedTrailingZeros = 64 - storedLeadingZeros - centerBits;
@@ -98,7 +98,7 @@ public class ElfXORDecompressor {
                 leadAndCenter = in.readInt(7);
                 storedLeadingZeros = leadingRepresentation[leadAndCenter >>> 4];
                 centerBits = leadAndCenter & 0xf;
-                if(centerBits == 0) {
+                if (centerBits == 0) {
                     centerBits = 16;
                 }
                 storedTrailingZeros = 64 - storedLeadingZeros - centerBits;

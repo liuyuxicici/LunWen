@@ -57,6 +57,16 @@ public class Elf64Utils {
         }
     }
 
+    public static int getLength(int x) {
+        int y = (x == 0 ? 0 : log2(x)) + 1;
+        int varIntNum = y / 7 + ((y % 7 > 0) ? 1 : 0);
+        return varIntNum * 8;
+    }
+
+    public static int log2(int x) {
+        return (int) (Math.log(x) / Math.log(2));
+    }
+
     private static int getSignificantCount(double v, int sp, int lastBetaStar) {
         int i;
         if (lastBetaStar != Integer.MAX_VALUE && lastBetaStar != 0) {
