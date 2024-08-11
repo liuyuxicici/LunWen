@@ -46,13 +46,13 @@ public class TestCompressor {
             "/Basel-temp.csv",
             "/Basel-wind.csv",
             "/Air-sensor.csv",
-//            //normal series
-//            "/SSD-bench.csv",
-//            "/electric_vehicle_charging.csv",
-//            "/Food-price.csv",
-//            "/City-lat.csv",
-//            "/City-lon.csv",
-//            "/Blockchain-tr.csv",
+            //normal series
+            "/SSD-bench.csv",
+            "/electric_vehicle_charging.csv",
+            "/Food-price.csv",
+            "/City-lat.csv",
+            "/City-lon.csv",
+            "/Blockchain-tr.csv",
     };
     private static final String STORE_RESULT = "src/test/resources/result/result.csv";
 
@@ -63,15 +63,15 @@ public class TestCompressor {
     public void testCompressor() throws IOException {
         for (String filename : FILENAMES) {
             Map<String, List<ResultStructure>> result = new HashMap<>();
-            System.out.println(filename);
+            System.out.println(":" + filename);
             testELFCompressor(filename, result);
-            testHuffCompressor(filename, result);
-            testFPC(filename, result);
-            testSnappy(filename, result);
-            testZstd(filename, result);
-            testLZ4(filename, result);
-            testBrotli(filename, result);
-            testXz(filename, result);
+//            testHuffCompressor(filename, result);
+//            testFPC(filename, result);
+//            testSnappy(filename, result);
+//            testZstd(filename, result);
+//            testLZ4(filename, result);
+//            testBrotli(filename, result);
+//            testXz(filename, result);
             for (Map.Entry<String, List<ResultStructure>> kv : result.entrySet()) {
                 Map<String, ResultStructure> r = new HashMap<>();
                 r.put(kv.getKey(), computeAvg(kv.getValue()));
@@ -86,6 +86,11 @@ public class TestCompressor {
 
     }
 
+    private void printMap(Map<Integer, Integer> mp) {
+        for (int i = 0; i < 66; i++) {
+            System.out.println(i + ":" + mp.get(i));
+        }
+    }
 
     private void testELFCompressor(String fileName, Map<String, List<ResultStructure>> resultCompressor) throws IOException {
         FileReader fileReader = new FileReader(FILE_PATH + fileName);
@@ -97,15 +102,19 @@ public class TestCompressor {
         HashMap<String, List<Double>> totalDecompressionTime = new HashMap<>();
         HashMap<String, Long> key2TotalSize = new HashMap<>();
 
+        Map<Integer, Integer> mp = new HashMap<>();
+        for (int i = 0; i < 66; i++) {
+            mp.put(i, 0);
+        }
 
         while ((values = fileReader.nextBlock()) != null) {
             totalBlocks += 1;
             ICompressor[] compressors = new ICompressor[]{
-                    new GorillaCompressorOS(),
+//                    new GorillaCompressorOS(),
 //                    new ElfOnGorillaCompressorOS(),
-                    new ChimpCompressor(),
+//                    new ChimpCompressor(),
 //                    new ElfOnChimpCompressor(),
-                    new ChimpNCompressor(128),
+//                    new ChimpNCompressor(128),
 //                    new ElfOnChimpNCompressor(128),
                     new ElfCompressor(),
             };
@@ -118,18 +127,22 @@ public class TestCompressor {
                     compressor.addValue(value);
                 }
 
-
                 compressor.close();
+
+                Map<Integer, Integer> rmp = compressor.getMap();
+                for (int k = 0; k < 66; k++) {
+                    mp.put(k, rmp.get(k) + mp.get(k));
+                }
 
                 encodingDuration = System.nanoTime() - start;
 
                 byte[] result = compressor.getBytes();
                 IDecompressor[] decompressors = new IDecompressor[]{
-                        new GorillaDecompressorOS(result),
+//                        new GorillaDecompressorOS(result),
 //                        new ElfOnGorillaDecompressorOS(result),
-                        new ChimpDecompressor(result),
+//                        new ChimpDecompressor(result),
 //                        new ElfOnChimpDecompressor(result),
-                        new ChimpNDecompressor(result, 128),
+//                        new ChimpNDecompressor(result, 128),
 //                        new ElfOnChimpNDecompressor(result, 128),
                         new ElfDecompressor(result),
                 };
@@ -155,7 +168,7 @@ public class TestCompressor {
                 key2TotalSize.put(key, compressor.getSize() + key2TotalSize.get(key));
             }
         }
-        //printMap(mp);
+        printMap(mp);
         for (Map.Entry<String, Long> kv : key2TotalSize.entrySet()) {
             String key = kv.getKey();
             Long totalSize = kv.getValue();
@@ -182,6 +195,7 @@ public class TestCompressor {
         HashMap<String, Long> key2TotalSize = new HashMap<>();
 
         while ((values = fileReader.nextBlock()) != null) {
+            //System.out.println("-----------new_block-----------");
             totalBlocks += 1;
             HuffCompressor compressor = new HuffCompressor();
             double encodingDuration;
@@ -209,7 +223,7 @@ public class TestCompressor {
             }
             totalCompressionTime.get(key).add(encodingDuration / TIME_PRECISION);
             totalDecompressionTime.get(key).add(decodingDuration / TIME_PRECISION);
-            key2TotalSize.put(key, compressor.getSize() + LeadingAndTrailing + key2TotalSize.get(key));
+            key2TotalSize.put(key, compressor.getSize() + LeadingAndTrailing + compressor.getVarint() + key2TotalSize.get(key));
         }
         for (Map.Entry<String, Long> kv : key2TotalSize.entrySet()) {
             String key = kv.getKey();
