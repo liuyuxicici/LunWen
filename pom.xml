@@ -85,6 +85,13 @@
             <version>${jmh.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.efficient-java-matrix-library</groupId>
+            <artifactId>ejml</artifactId>
+            <version>0.25</version>
+        </dependency>
+
     </dependencies>
 
     <properties>

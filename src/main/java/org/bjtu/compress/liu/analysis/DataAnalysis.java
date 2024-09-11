@@ -2,8 +2,12 @@ package org.bjtu.compress.liu.analysis;
 
 import org.bjtu.compress.liu.DataReader;
 import org.bjtu.compress.liu.entity.DecimalSeries;
+import org.bjtu.compress.liu.iforest.IForest;
+import org.bjtu.compress.liu.iforest.IsoForest;
+import org.ejml.data.DenseMatrix64F;
 
 import java.io.FileNotFoundException;
+import java.util.List;
 
 /**
  * @description: 数据分析
@@ -40,37 +44,37 @@ public class DataAnalysis {
 //            "/POI-lat.csv",
 //            "/POI-lon.csv"
 
-            "air_sensor_f.csv",
-            "arade4.csv",
-            "basel_temp_f.csv",
-            "basel_wind_f.csv",
-            "bird_migration_f.csv",
-            "bitcoin_f.csv",
-            "bitcoin_transactions_f.csv",
-            "city_temperature_f.csv",
+//            "air_sensor_f.csv",
+//            "arade4.csv",
+//            "basel_temp_f.csv",
+//            "basel_wind_f.csv",
+//            "bird_migration_f.csv",
+//            "bitcoin_f.csv",
+//            "bitcoin_transactions_f.csv",
+//            "city_temperature_f.csv",
             "cms1.csv",
-            "cms25.csv",
-            "cms9.csv",
-            "food_prices.csv",
-            "gov10.csv",
-            "gov26.csv",
-            "gov30.csv",
-            "gov31.csv",
-            "gov40.csv",
-            "medicare1.csv",
-            "medicare9.csv",
-            "neon_air_pressure.csv",
-            "neon_bio_temp_c.csv",
-            "neon_dew_point_temp.csv",
-            "neon_pm10_dust.csv",
-            "neon_wind_dir.csv",
-            "nyc29.csv",
-            "poi_lat.csv",
-            "poi_lon.csv",
-            "ssd_hdd_benchmarks_f.csv",
-            "stocks_de.csv",
-            "stocks_uk.csv",
-            "stocks_usa_c.csv",
+//            "cms25.csv",
+//            "cms9.csv",
+//            "food_prices.csv",
+//            "gov10.csv",
+//            "gov26.csv",
+//            "gov30.csv",
+//            "gov31.csv",
+//            "gov40.csv",
+//            "medicare1.csv",
+//            "medicare9.csv",
+//            "neon_air_pressure.csv",
+//            "neon_bio_temp_c.csv",
+//            "neon_dew_point_temp.csv",
+//            "neon_pm10_dust.csv",
+//            "neon_wind_dir.csv",
+//            "nyc29.csv",
+//            "poi_lat.csv",
+//            "poi_lon.csv",
+//            "ssd_hdd_benchmarks_f.csv",
+//            "stocks_de.csv",
+//            "stocks_uk.csv",
+//            "stocks_usa_c.csv",
 
     };
 
@@ -82,7 +86,19 @@ public class DataAnalysis {
             DataReader dataReader = new DataReader(FILE_PATH + filename, blockSize, patchSize);
             DecimalSeries decimalSeries;
             while ((decimalSeries = dataReader.nextBlock2Decimals()) != null) {
-                new DataAnalysis().analyzeDigitLength(decimalSeries);
+
+//                double[][] validDigitsLoc = decimalSeries.getValidDigitsLoc();
+//                IsoForest isoForest = new IsoForest();
+//                IForest forest = isoForest.train(validDigitsLoc);
+//                int[] predict = new int[decimalSeries.getSize()];
+//                for (int i = 0; i < validDigitsLoc.length; i++) {
+//                    DenseMatrix64F denseMatrix64F = new DenseMatrix64F(1, 2);
+//                    denseMatrix64F.set(0, 0, validDigitsLoc[i][0]);
+//                    denseMatrix64F.set(0, 1, validDigitsLoc[i][1]);
+//                    predict[i] = forest.predict(denseMatrix64F);
+//                }
+//                System.out.println(predict);
+
             }
         }
 
@@ -99,6 +115,7 @@ public class DataAnalysis {
         }
         System.out.println(fixLength);
     }
+
 
     private int getBitNum(int num) {
         return 32 - Integer.numberOfLeadingZeros(num);

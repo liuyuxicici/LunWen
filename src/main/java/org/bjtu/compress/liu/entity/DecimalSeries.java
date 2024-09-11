@@ -80,12 +80,12 @@ public class DecimalSeries {
 
     public int[][] getDigits() {
         if (size == 0) {
-            return null;
+            return new int[0][];
         }
         int[][] digits = new int[firstDigitIndex - lastDigitIndex + 1][size];
 
         for (int i = 0; i < size; i++) {
-            long sigData = decimals[i].getSigData();
+            long sigData = decimals[i].getValidData();
 
             int digitIdx = firstDigitIndex - decimals[i].getLastSigDigitIndex();
             while (sigData > 0) {
@@ -106,7 +106,32 @@ public class DecimalSeries {
         return signs;
     }
 
-    public int getDigitCnt() {
+    public long[] getValidData() {
+        if (size == 0) {
+            return new long[0];
+        }
+        long[] validData = new long[size];
+
+        for (int i = 0; i < size; i++) {
+            validData[i] = decimals[i].getValidData();
+        }
+        return validData;
+    }
+
+    public double[][] getValidDigitsLoc() {
+        if (size == 0) {
+            return new double[0][];
+        }
+
+        double[][] validDigitsLoc = new double[size][2];
+        for (int i = 0; i < size; i++) {
+            validDigitsLoc[i][0] = decimals[i].getFirstSigDigitIndex();
+            validDigitsLoc[i][1] = decimals[i].getLastSigDigitIndex();
+        }
+        return validDigitsLoc;
+    }
+
+    public int getValidDigitCount() {
         return firstDigitIndex - lastDigitIndex + 1;
     }
 

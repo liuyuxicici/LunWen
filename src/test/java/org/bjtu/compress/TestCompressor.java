@@ -13,8 +13,10 @@ import org.apache.hadoop.io.IOUtils;
 import org.apache.hadoop.io.compress.CompressionInputStream;
 import org.apache.hadoop.io.compress.CompressionOutputStream;
 import org.bjtu.compress.liu.DataReader;
+import org.bjtu.compress.liu.compressor.AbstractDataPartitionCompressor;
+import org.bjtu.compress.liu.compressor.DataPartitionCompressor;
 import org.bjtu.compress.liu.compressor.DigitCompressor;
-import org.bjtu.compress.liu.compressor.HundredDataCompressor;
+import org.bjtu.compress.liu.compressor.MergeDigitsCompressor;
 import org.bjtu.compress.liu.decompressor.DigitDecompressor;
 import org.bjtu.compress.liu.entity.DecimalSeries;
 import org.bjtu.compress.oran.compressor.HuffCompressor;
@@ -27,14 +29,10 @@ import org.urbcomp.startdb.compress.elf.doubleprecision.ResultStructure;
 import java.io.*;
 import java.nio.ByteBuffer;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -112,16 +110,17 @@ public class TestCompressor {
         for (String filename : FILENAMES) {
             Map<String, List<ResultStructure>> result = new HashMap<>();
             System.out.println(":" + filename);
-            testELFCompressor(filename, result);
-            testHuffCompressor(filename, result);
-            testFPC(filename, result);
+//            testELFCompressor(filename, result);
+//            testHuffCompressor(filename, result);
+//            testFPC(filename, result);
 //            testSnappy(filename, result);
 //            testZstd(filename, result);
 //            testLZ4(filename, result);
 //            testBrotli(filename, result);
 //            testXz(filename, result);
-            testDigitCompressor(filename, result);
-            testHundredDigitCompressor(filename, result);
+//            testDigitCompressor(filename, result);
+//            testHundredDigitCompressor(filename, result);
+            testDataPartitionCompressor(filename, result);
             for (Map.Entry<String, List<ResultStructure>> kv : result.entrySet()) {
                 Map<String, ResultStructure> r = new HashMap<>();
                 r.put(kv.getKey(), computeAvg(kv.getValue()));
@@ -134,6 +133,74 @@ public class TestCompressor {
         }
         storeResult();
 
+    }
+
+    private void testDataPartitionCompressor(String filename, Map<String, List<ResultStructure>> resultCompressor) throws IOException {
+        int blockSize = 1024;
+        int patchSize = 8;
+        DataReader dataReader = new DataReader(FILE_PATH + filename, blockSize, patchSize);
+
+        float totalBlocks = 0;
+        DecimalSeries decimalSeries;
+
+        HashMap<String, List<Double>> totalCompressionTime = new HashMap<>();
+        HashMap<String, List<Double>> totalDecompressionTime = new HashMap<>();
+        HashMap<String, Long> key2TotalSize = new HashMap<>();
+
+        while ((decimalSeries = dataReader.nextBlock2Decimals()) != null) {
+            totalBlocks += 1;
+
+            AbstractDataPartitionCompressor dataPartitionCompressor = new DataPartitionCompressor(blockSize, patchSize);
+
+            double encodingDuration;
+            double decodingDuration;
+            long start = System.nanoTime();
+
+            dataPartitionCompressor.doCompress(decimalSeries);
+
+            encodingDuration = System.nanoTime() - start;
+
+            byte[] bytes = dataPartitionCompressor.getBytes();
+
+
+            DigitDecompressor digitDecompressor = new DigitDecompressor(bytes);
+
+            String key = dataPartitionCompressor.getKey();
+            if (!totalCompressionTime.containsKey(key)) {
+                totalCompressionTime.put(key, new ArrayList<>());
+                totalDecompressionTime.put(key, new ArrayList<>());
+                key2TotalSize.put(key, 0L);
+            }
+
+
+            start = System.nanoTime();
+            List<Double> uncompressedValues = digitDecompressor.decompress();
+
+            decodingDuration = System.nanoTime() - start;
+//            for (int j = 0; j < values.length; j++) {
+//                assertEquals(values[j], uncompressedValues.get(j), "Value did not match " + compressor.getKey()
+//                        + " block:" + totalBlocks
+//                        + " filename:" + fileName + ",line:" + j);
+//            }
+            totalCompressionTime.get(key).add(encodingDuration / TIME_PRECISION);
+            totalDecompressionTime.get(key).add(decodingDuration / TIME_PRECISION);
+            key2TotalSize.put(key, dataPartitionCompressor.getSize() + key2TotalSize.get(key));
+        }
+
+        for (Map.Entry<String, Long> kv : key2TotalSize.entrySet()) {
+            String key = kv.getKey();
+            Long totalSize = kv.getValue();
+            ResultStructure r = new ResultStructure(filename, key,
+                    totalSize / (totalBlocks * blockSize * 64.0),
+                    totalCompressionTime.get(key),
+                    totalDecompressionTime.get(key)
+
+            );
+            if (!resultCompressor.containsKey(key)) {
+                resultCompressor.put(key, new ArrayList<>());
+            }
+            resultCompressor.get(key).add(r);
+        }
     }
 
     private void testHundredDigitCompressor(String filename, Map<String, List<ResultStructure>> resultCompressor) throws IOException {
@@ -152,7 +219,7 @@ public class TestCompressor {
         while ((decimalSeries = dataReader.nextBlock2Decimals()) != null) {
             totalBlocks += 1;
 
-            HundredDataCompressor hundredDataCompressor = new HundredDataCompressor(decimalSeries, blockSize, patchSize);
+            MergeDigitsCompressor hundredDataCompressor = new MergeDigitsCompressor(decimalSeries, blockSize, patchSize, 3);
 
             double encodingDuration;
             double decodingDuration;

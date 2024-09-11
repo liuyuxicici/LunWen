@@ -1,218 +1,32 @@
-FileName	CompressorName	CompressorRatio	CompressionTime	MaxCompressTime	MinCompressTime	MediaCompressTime	DecompressionTime	MaxDecompressTime	MinDecompressTime	MediaDecompressTime	
-air_sensor_f.csv	DigitCompressor	0.99761962890625	3897.0	3897.0	3897.0	3897.0	59.0	59.0	59.0	59.0	
-air_sensor_f.csv	FPC	0.83675	778.3	778.3	778.3	778.3	826.4	826.4	826.4	826.4	
-air_sensor_f.csv	ChimpNCompressor	0.811671875	313.3	313.3	313.3	313.3	281.1	281.1	281.1	281.1	
-air_sensor_f.csv	GorillaCompressorOS	0.85603125	669.9	669.9	669.9	669.9	12426.5	12426.5	12426.5	12426.5	
-air_sensor_f.csv	ElfCompressor	0.888421875	10519.1	10519.1	10519.1	10519.1	1035.8	1035.8	1035.8	1035.8	
-air_sensor_f.csv	HundredDataCompressor	0.90692138671875	2498.0	2498.0	2498.0	2498.0	48.1	48.1	48.1	48.1	
-air_sensor_f.csv	ChimpCompressor	0.8111875	443.0	443.0	443.0	443.0	1023.9	1023.9	1023.9	1023.9	
-arade4.csv	DigitCompressor	0.45166015625	960.5	960.5	960.5	960.5	73.5	73.5	73.5	73.5	
-arade4.csv	FPC	0.920375	143.3	143.3	143.3	143.3	70.3	70.3	70.3	70.3	
-arade4.csv	ChimpNCompressor	0.759	169.4	169.4	169.4	169.4	75.3	75.3	75.3	75.3	
-arade4.csv	GorillaCompressorOS	0.907703125	98.2	98.2	98.2	98.2	101.8	101.8	101.8	101.8	
-arade4.csv	ElfCompressor	0.48253125	598.2	598.2	598.2	598.2	888.5	888.5	888.5	888.5	
-arade4.csv	HundredDataCompressor	0.3985595703125	1163.3	1163.3	1163.3	1163.3	44.0	44.0	44.0	44.0	
-arade4.csv	ChimpCompressor	0.87284375	124.6	124.6	124.6	124.6	79.3	79.3	79.3	79.3	
-basel_temp_f.csv	DigitCompressor	0.336669921875	1200.1	1200.1	1200.1	1200.1	1816.7	1816.7	1816.7	1816.7	
-basel_temp_f.csv	FPC	0.9155	294.0	294.0	294.0	294.0	59.6	59.6	59.6	59.6	
-basel_temp_f.csv	ChimpNCompressor	0.57965625	120.6	120.6	120.6	120.6	86.0	86.0	86.0	86.0	
-basel_temp_f.csv	GorillaCompressorOS	1.02125	90.8	90.8	90.8	90.8	223.6	223.6	223.6	223.6	
-basel_temp_f.csv	ElfCompressor	0.544765625	222.6	222.6	222.6	222.6	119.3	119.3	119.3	119.3	
-basel_temp_f.csv	HundredDataCompressor	0.41827392578125	2339.3	2339.3	2339.3	2339.3	1110.7	1110.7	1110.7	1110.7	
-basel_temp_f.csv	ChimpCompressor	0.8633125	256.5	256.5	256.5	256.5	91.7	91.7	91.7	91.7	
-basel_wind_f.csv	DigitCompressor	0.515350341796875	2141.6	2141.6	2141.6	2141.6	73.9	73.9	73.9	73.9	
-basel_wind_f.csv	FPC	0.878625	121.9	121.9	121.9	121.9	51.2	51.2	51.2	51.2	
-basel_wind_f.csv	ChimpNCompressor	0.59996875	84.3	84.3	84.3	84.3	59.6	59.6	59.6	59.6	
-basel_wind_f.csv	GorillaCompressorOS	0.92928125	102.9	102.9	102.9	102.9	75.8	75.8	75.8	75.8	
-basel_wind_f.csv	ElfCompressor	0.51309375	192.6	192.6	192.6	192.6	102.3	102.3	102.3	102.3	
-basel_wind_f.csv	HundredDataCompressor	0.50244140625	1381.2	1381.2	1381.2	1381.2	62.4	62.4	62.4	62.4	
-basel_wind_f.csv	ChimpCompressor	0.832328125	91.2	91.2	91.2	91.2	69.7	69.7	69.7	69.7	
-bird_migration_f.csv	DigitCompressor	0.220916748046875	368.1	368.1	368.1	368.1	32.5	32.5	32.5	32.5	
-bird_migration_f.csv	FPC	0.673875	182.6	182.6	182.6	182.6	39.9	39.9	39.9	39.9	
-bird_migration_f.csv	ChimpNCompressor	0.320859375	71.2	71.2	71.2	71.2	58.5	58.5	58.5	58.5	
-bird_migration_f.csv	GorillaCompressorOS	0.769109375	74.7	74.7	74.7	74.7	61.8	61.8	61.8	61.8	
-bird_migration_f.csv	ElfCompressor	0.33409375	187.4	187.4	187.4	187.4	115.2	115.2	115.2	115.2	
-bird_migration_f.csv	HundredDataCompressor	0.1956787109375	426.9	426.9	426.9	426.9	40.6	40.6	40.6	40.6	
-bird_migration_f.csv	ChimpCompressor	0.639109375	76.1	76.1	76.1	76.1	63.4	63.4	63.4	63.4	
-bitcoin_f.csv	DigitCompressor	0.49700927734375	665.0	665.0	665.0	665.0	47.1	47.1	47.1	47.1	
-bitcoin_f.csv	FPC	0.793375	80.7	80.7	80.7	80.7	45.4	45.4	45.4	45.4	
-bitcoin_f.csv	ChimpNCompressor	0.690796875	93.6	93.6	93.6	93.6	54.5	54.5	54.5	54.5	
-bitcoin_f.csv	GorillaCompressorOS	0.88321875	92.8	92.8	92.8	92.8	65.1	65.1	65.1	65.1	
-bitcoin_f.csv	ElfCompressor	0.516734375	217.7	217.7	217.7	217.7	94.6	94.6	94.6	94.6	
-bitcoin_f.csv	HundredDataCompressor	0.3616943359375	2239.7	2239.7	2239.7	2239.7	57.4	57.4	57.4	57.4	
-bitcoin_f.csv	ChimpCompressor	0.737375	73.9	73.9	73.9	73.9	56.5	56.5	56.5	56.5	
-bitcoin_transactions_f.csv	DigitCompressor	0.478363037109375	456.4	456.4	456.4	456.4	46.0	46.0	46.0	46.0	
-bitcoin_transactions_f.csv	FPC	0.87575	105.5	105.5	105.5	105.5	42.6	42.6	42.6	42.6	
-bitcoin_transactions_f.csv	ChimpNCompressor	0.796921875	84.5	84.5	84.5	84.5	56.2	56.2	56.2	56.2	
-bitcoin_transactions_f.csv	GorillaCompressorOS	0.92659375	67.4	67.4	67.4	67.4	59.1	59.1	59.1	59.1	
-bitcoin_transactions_f.csv	ElfCompressor	0.535921875	201.6	201.6	201.6	201.6	101.6	101.6	101.6	101.6	
-bitcoin_transactions_f.csv	HundredDataCompressor	0.41632080078125	838.7	838.7	838.7	838.7	75.8	75.8	75.8	75.8	
-bitcoin_transactions_f.csv	ChimpCompressor	0.849296875	69.4	69.4	69.4	69.4	51.0	51.0	51.0	51.0	
-city_temperature_f.csv	DigitCompressor	0.15679931640625	224.9	224.9	224.9	224.9	44.5	44.5	44.5	44.5	
-city_temperature_f.csv	FPC	0.86125	154.7	154.7	154.7	154.7	67.5	67.5	67.5	67.5	
-city_temperature_f.csv	ChimpNCompressor	0.3571875	167.2	167.2	167.2	167.2	110.5	110.5	110.5	110.5	
-city_temperature_f.csv	GorillaCompressorOS	0.97725	90.4	90.4	90.4	90.4	126.5	126.5	126.5	126.5	
-city_temperature_f.csv	ElfCompressor	0.223734375	219.1	219.1	219.1	219.1	246.2	246.2	246.2	246.2	
-city_temperature_f.csv	HundredDataCompressor	0.140869140625	336.4	336.4	336.4	336.4	47.0	47.0	47.0	47.0	
-city_temperature_f.csv	ChimpCompressor	0.73375	131.3	131.3	131.3	131.3	114.5	114.5	114.5	114.5	
-cms1.csv	DigitCompressor	0.66119384765625	1178.7	1178.7	1178.7	1178.7	73.3	73.3	73.3	73.3	
-cms1.csv	FPC	0.88675	134.4	134.4	134.4	134.4	50.7	50.7	50.7	50.7	
-cms1.csv	ChimpNCompressor	0.724625	119.6	119.6	119.6	119.6	65.7	65.7	65.7	65.7	
-cms1.csv	GorillaCompressorOS	0.874375	138.5	138.5	138.5	138.5	214.0	214.0	214.0	214.0	
-cms1.csv	ElfCompressor	0.63475	309.8	309.8	309.8	309.8	213.3	213.3	213.3	213.3	
-cms1.csv	HundredDataCompressor	0.67498779296875	520.3	520.3	520.3	520.3	40.8	40.8	40.8	40.8	
-cms1.csv	ChimpCompressor	0.84409375	57.3	57.3	57.3	57.3	59.3	59.3	59.3	59.3	
-cms25.csv	DigitCompressor	0.7357177734375	1084.9	1084.9	1084.9	1084.9	50.9	50.9	50.9	50.9	
-cms25.csv	FPC	0.93925	149.9	149.9	149.9	149.9	103.7	103.7	103.7	103.7	
-cms25.csv	ChimpNCompressor	0.91459375	115.7	115.7	115.7	115.7	110.8	110.8	110.8	110.8	
-cms25.csv	GorillaCompressorOS	1.014640625	55.6	55.6	55.6	55.6	134.9	134.9	134.9	134.9	
-cms25.csv	ElfCompressor	0.742109375	189.0	189.0	189.0	189.0	173.6	173.6	173.6	173.6	
-cms25.csv	HundredDataCompressor	0.653564453125	1621.5	1621.5	1621.5	1621.5	45.2	45.2	45.2	45.2	
-cms25.csv	ChimpCompressor	0.920015625	72.7	72.7	72.7	72.7	119.6	119.6	119.6	119.6	
-cms9.csv	DigitCompressor	0.146697998046875	399.3	399.3	399.3	399.3	29.8	29.8	29.8	29.8	
-cms9.csv	FPC	0.90175	161.8	161.8	161.8	161.8	82.1	82.1	82.1	82.1	
-cms9.csv	ChimpNCompressor	0.37075	96.3	96.3	96.3	96.3	111.2	111.2	111.2	111.2	
-cms9.csv	GorillaCompressorOS	0.23484375	43.2	43.2	43.2	43.2	122.6	122.6	122.6	122.6	
-cms9.csv	ElfCompressor	0.21240625	185.2	185.2	185.2	185.2	175.3	175.3	175.3	175.3	
-cms9.csv	HundredDataCompressor	0.17572021484375	817.8	817.8	817.8	817.8	32.2	32.2	32.2	32.2	
-cms9.csv	ChimpCompressor	0.261375	85.8	85.8	85.8	85.8	134.5	134.5	134.5	134.5	
-food_prices.csv	DigitCompressor	0.196807861328125	826.0	826.0	826.0	826.0	35.3	35.3	35.3	35.3	
-food_prices.csv	FPC	0.487	196.0	196.0	196.0	196.0	83.7	83.7	83.7	83.7	
-food_prices.csv	ChimpNCompressor	0.277671875	72.7	72.7	72.7	72.7	94.9	94.9	94.9	94.9	
-food_prices.csv	GorillaCompressorOS	0.45971875	44.2	44.2	44.2	44.2	127.6	127.6	127.6	127.6	
-food_prices.csv	ElfCompressor	0.169578125	133.9	133.9	133.9	133.9	145.7	145.7	145.7	145.7	
-food_prices.csv	HundredDataCompressor	0.21539306640625	952.0	952.0	952.0	952.0	30.0	30.0	30.0	30.0	
-food_prices.csv	ChimpCompressor	0.2559375	59.9	59.9	59.9	59.9	260.3	260.3	260.3	260.3	
-gov10.csv	DigitCompressor	0.375335693359375	413.1	413.1	413.1	413.1	105.7	105.7	105.7	105.7	
-gov10.csv	FPC	0.83175	88.0	88.0	88.0	88.0	50.6	50.6	50.6	50.6	
-gov10.csv	ChimpNCompressor	0.53215625	45.3	45.3	45.3	45.3	46.7	46.7	46.7	46.7	
-gov10.csv	GorillaCompressorOS	0.9255	27.0	27.0	27.0	27.0	59.2	59.2	59.2	59.2	
-gov10.csv	ElfCompressor	0.422015625	115.4	115.4	115.4	115.4	93.4	93.4	93.4	93.4	
-gov10.csv	HundredDataCompressor	0.36334228515625	608.6	608.6	608.6	608.6	106.5	106.5	106.5	106.5	
-gov10.csv	ChimpCompressor	0.61034375	43.0	43.0	43.0	43.0	187.5	187.5	187.5	187.5	
-gov26.csv	DigitCompressor	0.009765625	110.0	110.0	110.0	110.0	18.5	18.5	18.5	18.5	
-gov26.csv	FPC	0.0625	21.9	21.9	21.9	21.9	22.2	22.2	22.2	22.2	
-gov26.csv	ChimpNCompressor	0.14196875	16.5	16.5	16.5	16.5	29.4	29.4	29.4	29.4	
-gov26.csv	GorillaCompressorOS	0.017	14.0	14.0	14.0	14.0	44.6	44.6	44.6	44.6	
-gov26.csv	ElfCompressor	0.062578125	30.1	30.1	30.1	30.1	58.2	58.2	58.2	58.2	
-gov26.csv	HundredDataCompressor	0.00390625	157.0	157.0	157.0	157.0	15.9	15.9	15.9	15.9	
-gov26.csv	ChimpCompressor	0.03259375	9.5	9.5	9.5	9.5	76.4	76.4	76.4	76.4	
-gov30.csv	DigitCompressor	0.06121826171875	136.9	136.9	136.9	136.9	15.2	15.2	15.2	15.2	
-gov30.csv	FPC	0.0655	23.0	23.0	23.0	23.0	16.3	16.3	16.3	16.3	
-gov30.csv	ChimpNCompressor	0.14471875	16.3	16.3	16.3	16.3	29.1	29.1	29.1	29.1	
-gov30.csv	GorillaCompressorOS	0.023796875	13.9	13.9	13.9	13.9	40.0	40.0	40.0	40.0	
-gov30.csv	ElfCompressor	0.064890625	18.6	18.6	18.6	18.6	89.8	89.8	89.8	89.8	
-gov30.csv	HundredDataCompressor	0.01519775390625	91.4	91.4	91.4	91.4	14.6	14.6	14.6	14.6	
-gov30.csv	ChimpCompressor	0.036453125	10.9	10.9	10.9	10.9	81.6	81.6	81.6	81.6	
-gov31.csv	DigitCompressor	0.0589599609375	136.4	136.4	136.4	136.4	15.6	15.6	15.6	15.6	
-gov31.csv	FPC	0.0635	21.1	21.1	21.1	21.1	14.6	14.6	14.6	14.6	
-gov31.csv	ChimpNCompressor	0.14290625	15.4	15.4	15.4	15.4	30.2	30.2	30.2	30.2	
-gov31.csv	GorillaCompressorOS	0.019796875	13.6	13.6	13.6	13.6	45.9	45.9	45.9	45.9	
-gov31.csv	ElfCompressor	0.063796875	17.5	17.5	17.5	17.5	47.7	47.7	47.7	47.7	
-gov31.csv	HundredDataCompressor	0.01043701171875	73.9	73.9	73.9	73.9	14.6	14.6	14.6	14.6	
-gov31.csv	ChimpCompressor	0.034640625	9.9	9.9	9.9	9.9	64.8	64.8	64.8	64.8	
-gov40.csv	DigitCompressor	0.05828857421875	132.0	132.0	132.0	132.0	15.2	15.2	15.2	15.2	
-gov40.csv	FPC	0.065375	22.7	22.7	22.7	22.7	15.3	15.3	15.3	15.3	
-gov40.csv	ChimpNCompressor	0.14384375	15.5	15.5	15.5	15.5	28.1	28.1	28.1	28.1	
-gov40.csv	GorillaCompressorOS	0.01890625	14.1	14.1	14.1	14.1	39.4	39.4	39.4	39.4	
-gov40.csv	ElfCompressor	0.064234375	21.3	21.3	21.3	21.3	33.0	33.0	33.0	33.0	
-gov40.csv	HundredDataCompressor	0.01019287109375	71.6	71.6	71.6	71.6	14.4	14.4	14.4	14.4	
-gov40.csv	ChimpCompressor	0.03446875	9.8	9.8	9.8	9.8	44.2	44.2	44.2	44.2	
-medicare1.csv	DigitCompressor	0.488494873046875	326.0	326.0	326.0	326.0	15.9	15.9	15.9	15.9	
-medicare1.csv	FPC	0.65525	40.4	40.4	40.4	40.4	174.9	174.9	174.9	174.9	
-medicare1.csv	ChimpNCompressor	0.410296875	46.1	46.1	46.1	46.1	58.5	58.5	58.5	58.5	
-medicare1.csv	GorillaCompressorOS	0.665296875	24.6	24.6	24.6	24.6	51.8	51.8	51.8	51.8	
-medicare1.csv	ElfCompressor	0.392859375	73.7	73.7	73.7	73.7	85.0	85.0	85.0	85.0	
-medicare1.csv	HundredDataCompressor	0.52099609375	144.5	144.5	144.5	144.5	14.4	14.4	14.4	14.4	
-medicare1.csv	ChimpCompressor	0.636671875	27.3	27.3	27.3	27.3	76.0	76.0	76.0	76.0	
-medicare9.csv	DigitCompressor	0.151031494140625	155.2	155.2	155.2	155.2	14.9	14.9	14.9	14.9	
-medicare9.csv	FPC	0.920875	36.1	36.1	36.1	36.1	51.1	51.1	51.1	51.1	
-medicare9.csv	ChimpNCompressor	0.382125	37.3	37.3	37.3	37.3	36.1	36.1	36.1	36.1	
-medicare9.csv	GorillaCompressorOS	0.242296875	20.6	20.6	20.6	20.6	43.8	43.8	43.8	43.8	
-medicare9.csv	ElfCompressor	0.225265625	64.2	64.2	64.2	64.2	78.6	78.6	78.6	78.6	
-medicare9.csv	HundredDataCompressor	0.18048095703125	2993.6	2993.6	2993.6	2993.6	17.0	17.0	17.0	17.0	
-medicare9.csv	ChimpCompressor	0.27275	43.0	43.0	43.0	43.0	54.6	54.6	54.6	54.6	
-neon_air_pressure.csv	DigitCompressor	0.24505615234375	211.8	211.8	211.8	211.8	15.3	15.3	15.3	15.3	
-neon_air_pressure.csv	FPC	0.645625	35.6	35.6	35.6	35.6	28.3	28.3	28.3	28.3	
-neon_air_pressure.csv	ChimpNCompressor	0.505609375	34.4	34.4	34.4	34.4	42.4	42.4	42.4	42.4	
-neon_air_pressure.csv	GorillaCompressorOS	0.7181875	26.2	26.2	26.2	26.2	48.4	48.4	48.4	48.4	
-neon_air_pressure.csv	ElfCompressor	0.23134375	36.3	36.3	36.3	36.3	79.5	79.5	79.5	79.5	
-neon_air_pressure.csv	HundredDataCompressor	0.2008056640625	94.4	94.4	94.4	94.4	13.9	13.9	13.9	13.9	
-neon_air_pressure.csv	ChimpCompressor	0.63009375	21.5	21.5	21.5	21.5	35.0	35.0	35.0	35.0	
-neon_bio_temp_c.csv	DigitCompressor	0.134979248046875	145.9	145.9	145.9	145.9	15.2	15.2	15.2	15.2	
-neon_bio_temp_c.csv	FPC	0.757375	35.7	35.7	35.7	35.7	42.1	42.1	42.1	42.1	
-neon_bio_temp_c.csv	ChimpNCompressor	0.257890625	32.4	32.4	32.4	32.4	37.0	37.0	37.0	37.0	
-neon_bio_temp_c.csv	GorillaCompressorOS	0.800828125	27.4	27.4	27.4	27.4	41.9	41.9	41.9	41.9	
-neon_bio_temp_c.csv	ElfCompressor	0.186375	56.5	56.5	56.5	56.5	97.1	97.1	97.1	97.1	
-neon_bio_temp_c.csv	HundredDataCompressor	0.10467529296875	83.0	83.0	83.0	83.0	14.9	14.9	14.9	14.9	
-neon_bio_temp_c.csv	ChimpCompressor	0.741453125	28.7	28.7	28.7	28.7	39.7	39.7	39.7	39.7	
-neon_dew_point_temp.csv	DigitCompressor	0.190338134765625	178.3	178.3	178.3	178.3	15.4	15.4	15.4	15.4	
-neon_dew_point_temp.csv	FPC	0.796875	26.7	26.7	26.7	26.7	32.3	32.3	32.3	32.3	
-neon_dew_point_temp.csv	ChimpNCompressor	0.472828125	41.5	41.5	41.5	41.5	41.9	41.9	41.9	41.9	
-neon_dew_point_temp.csv	GorillaCompressorOS	0.79246875	38.1	38.1	38.1	38.1	41.7	41.7	41.7	41.7	
-neon_dew_point_temp.csv	ElfCompressor	0.223296875	52.0	52.0	52.0	52.0	67.2	67.2	67.2	67.2	
-neon_dew_point_temp.csv	HundredDataCompressor	0.155029296875	90.6	90.6	90.6	90.6	14.0	14.0	14.0	14.0	
-neon_dew_point_temp.csv	ChimpCompressor	0.751609375	30.0	30.0	30.0	30.0	37.8	37.8	37.8	37.8	
-neon_pm10_dust.csv	DigitCompressor	0.0792236328125	126.9	126.9	126.9	126.9	14.2	14.2	14.2	14.2	
-neon_pm10_dust.csv	FPC	0.51775	34.3	34.3	34.3	34.3	29.5	29.5	29.5	29.5	
-neon_pm10_dust.csv	ChimpNCompressor	0.1918125	21.3	21.3	21.3	21.3	29.5	29.5	29.5	29.5	
-neon_pm10_dust.csv	GorillaCompressorOS	0.51159375	51.7	51.7	51.7	51.7	43.3	43.3	43.3	43.3	
-neon_pm10_dust.csv	ElfCompressor	0.105359375	448.3	448.3	448.3	448.3	394.2	394.2	394.2	394.2	
-neon_pm10_dust.csv	HundredDataCompressor	0.06610107421875	75.2	75.2	75.2	75.2	14.5	14.5	14.5	14.5	
-neon_pm10_dust.csv	ChimpCompressor	0.503890625	21.6	21.6	21.6	21.6	36.7	36.7	36.7	36.7	
-neon_wind_dir.csv	DigitCompressor	0.29449462890625	227.6	227.6	227.6	227.6	19.3	19.3	19.3	19.3	
-neon_wind_dir.csv	FPC	0.9245	32.0	32.0	32.0	32.0	24.5	24.5	24.5	24.5	
-neon_wind_dir.csv	ChimpNCompressor	0.459	37.3	37.3	37.3	37.3	34.2	34.2	34.2	34.2	
-neon_wind_dir.csv	GorillaCompressorOS	0.887578125	19.2	19.2	19.2	19.2	38.1	38.1	38.1	38.1	
-neon_wind_dir.csv	ElfCompressor	0.368125	134.1	134.1	134.1	134.1	216.2	216.2	216.2	216.2	
-neon_wind_dir.csv	HundredDataCompressor	0.257568359375	90.7	90.7	90.7	90.7	14.2	14.2	14.2	14.2	
-neon_wind_dir.csv	ChimpCompressor	0.862359375	27.4	27.4	27.4	27.4	39.3	39.3	39.3	39.3	
-nyc29.csv	DigitCompressor	0.607269287109375	378.5	378.5	378.5	378.5	439.3	439.3	439.3	439.3	
-nyc29.csv	FPC	0.358	29.9	29.9	29.9	29.9	28.9	28.9	28.9	28.9	
-nyc29.csv	ChimpNCompressor	0.282125	25.4	25.4	25.4	25.4	36.9	36.9	36.9	36.9	
-nyc29.csv	GorillaCompressorOS	0.3491875	44.9	44.9	44.9	44.9	50.9	50.9	50.9	50.9	
-nyc29.csv	ElfCompressor	0.362671875	93.4	93.4	93.4	93.4	60.6	60.6	60.6	60.6	
-nyc29.csv	HundredDataCompressor	0.556396484375	131.0	131.0	131.0	131.0	459.2	459.2	459.2	459.2	
-nyc29.csv	ChimpCompressor	0.3254375	19.2	19.2	19.2	19.2	38.2	38.2	38.2	38.2	
-poi_lat.csv	DigitCompressor	1.09222412109375	486.5	486.5	486.5	486.5	289.8	289.8	289.8	289.8	
-poi_lat.csv	FPC	0.9485	46.7	46.7	46.7	46.7	28.5	28.5	28.5	28.5	
-poi_lat.csv	ChimpNCompressor	0.899125	66.9	66.9	66.9	66.9	100.9	100.9	100.9	100.9	
-poi_lat.csv	GorillaCompressorOS	1.032453125	24.1	24.1	24.1	24.1	54.4	54.4	54.4	54.4	
-poi_lat.csv	ElfCompressor	0.974734375	119.7	119.7	119.7	119.7	59.7	59.7	59.7	59.7	
-poi_lat.csv	HundredDataCompressor	1.01239013671875	173.5	173.5	173.5	173.5	284.5	284.5	284.5	284.5	
-poi_lat.csv	ChimpCompressor	0.90515625	46.9	46.9	46.9	46.9	92.5	92.5	92.5	92.5	
-poi_lon.csv	DigitCompressor	1.142578125	949.2	949.2	949.2	949.2	459.6	459.6	459.6	459.6	
-poi_lon.csv	FPC	1.005125	42.2	42.2	42.2	42.2	35.2	35.2	35.2	35.2	
-poi_lon.csv	ChimpNCompressor	0.98734375	46.6	46.6	46.6	46.6	44.2	44.2	44.2	44.2	
-poi_lon.csv	GorillaCompressorOS	1.032421875	41.8	41.8	41.8	41.8	44.6	44.6	44.6	44.6	
-poi_lon.csv	ElfCompressor	1.063171875	142.3	142.3	142.3	142.3	53.6	53.6	53.6	53.6	
-poi_lon.csv	HundredDataCompressor	1.05712890625	8350.3	8350.3	8350.3	8350.3	363.4	363.4	363.4	363.4	
-poi_lon.csv	ChimpCompressor	0.989	32.4	32.4	32.4	32.4	46.6	46.6	46.6	46.6	
-ssd_hdd_benchmarks_f.csv	DigitCompressor	0.2730712890625	558.0	558.0	558.0	558.0	54.5	54.5	54.5	54.5	
-ssd_hdd_benchmarks_f.csv	FPC	0.6465	147.6	147.6	147.6	147.6	122.5	122.5	122.5	122.5	
-ssd_hdd_benchmarks_f.csv	ChimpNCompressor	0.24184375	27.4	27.4	27.4	27.4	32.1	32.1	32.1	32.1	
-ssd_hdd_benchmarks_f.csv	GorillaCompressorOS	0.73065625	25.1	25.1	25.1	25.1	46.2	46.2	46.2	46.2	
-ssd_hdd_benchmarks_f.csv	ElfCompressor	0.256453125	99.5	99.5	99.5	99.5	94.5	94.5	94.5	94.5	
-ssd_hdd_benchmarks_f.csv	HundredDataCompressor	0.251220703125	239.5	239.5	239.5	239.5	54.5	54.5	54.5	54.5	
-ssd_hdd_benchmarks_f.csv	ChimpCompressor	0.675765625	25.3	25.3	25.3	25.3	37.4	37.4	37.4	37.4	
-stocks_de.csv	DigitCompressor	0.1480712890625	132.0	132.0	132.0	132.0	13.7	13.7	13.7	13.7	
-stocks_de.csv	FPC	0.78825	28.3	28.3	28.3	28.3	35.9	35.9	35.9	35.9	
-stocks_de.csv	ChimpNCompressor	0.238984375	29.8	29.8	29.8	29.8	40.4	40.4	40.4	40.4	
-stocks_de.csv	GorillaCompressorOS	0.763640625	55.2	55.2	55.2	55.2	57.8	57.8	57.8	57.8	
-stocks_de.csv	ElfCompressor	0.2015625	80.0	80.0	80.0	80.0	50.9	50.9	50.9	50.9	
-stocks_de.csv	HundredDataCompressor	0.1121826171875	66.5	66.5	66.5	66.5	14.2	14.2	14.2	14.2	
-stocks_de.csv	ChimpCompressor	0.72278125	35.6	35.6	35.6	35.6	50.3	50.3	50.3	50.3	
-stocks_uk.csv	DigitCompressor	0.141510009765625	214.1	214.1	214.1	214.1	29.4	29.4	29.4	29.4	
-stocks_uk.csv	FPC	0.66225	26.5	26.5	26.5	26.5	24.5	24.5	24.5	24.5	
-stocks_uk.csv	ChimpNCompressor	0.323671875	33.8	33.8	33.8	33.8	32.4	32.4	32.4	32.4	
-stocks_uk.csv	GorillaCompressorOS	0.143296875	58.8	58.8	58.8	58.8	94.6	94.6	94.6	94.6	
-stocks_uk.csv	ElfCompressor	0.144890625	57.7	57.7	57.7	57.7	50.2	50.2	50.2	50.2	
-stocks_uk.csv	HundredDataCompressor	0.129638671875	136.8	136.8	136.8	136.8	51.0	51.0	51.0	51.0	
-stocks_uk.csv	ChimpCompressor	0.214296875	102.4	102.4	102.4	102.4	91.3	91.3	91.3	91.3	
-stocks_usa_c.csv	DigitCompressor	0.080352783203125	99.2	99.2	99.2	99.2	13.0	13.0	13.0	13.0	
-stocks_usa_c.csv	FPC	0.448625	28.3	28.3	28.3	28.3	20.3	20.3	20.3	20.3	
-stocks_usa_c.csv	ChimpNCompressor	0.183796875	20.6	20.6	20.6	20.6	36.8	36.8	36.8	36.8	
-stocks_usa_c.csv	GorillaCompressorOS	0.452328125	17.6	17.6	17.6	17.6	44.2	44.2	44.2	44.2	
-stocks_usa_c.csv	ElfCompressor	0.10146875	34.5	34.5	34.5	34.5	45.4	45.4	45.4	45.4	
-stocks_usa_c.csv	HundredDataCompressor	0.06121826171875	55.9	55.9	55.9	55.9	12.7	12.7	12.7	12.7	
-stocks_usa_c.csv	ChimpCompressor	0.426109375	25.1	25.1	25.1	25.1	55.7	55.7	55.7	55.7	
+FileName,CompressorName,CompressorRatio,CompressionTime,MaxCompressTime,MinCompressTime,MediaCompressTime,DecompressionTime,MaxDecompressTime,MinDecompressTime,MediaDecompressTime
+air_sensor_f.csv,DataPartitionCompressor,0.906585693,23488.6,23488.6,23488.6,23488.6,70,70,70,70
+arade4.csv,DataPartitionCompressor,0.439941406,17689.3,17689.3,17689.3,17689.3,75.7,75.7,75.7,75.7
+basel_temp_f.csv,DataPartitionCompressor,0.468383789,8702.4,8702.4,8702.4,8702.4,1735.5,1735.5,1735.5,1735.5
+basel_wind_f.csv,DataPartitionCompressor,0.465148926,8812.3,8812.3,8812.3,8812.3,47.7,47.7,47.7,47.7
+bird_migration_f.csv,DataPartitionCompressor,0.229980469,8454.3,8454.3,8454.3,8454.3,52.9,52.9,52.9,52.9
+bitcoin_f.csv,DataPartitionCompressor,0.461791992,8987.9,8987.9,8987.9,8987.9,34.8,34.8,34.8,34.8
+bitcoin_transactions_f.csv,DataPartitionCompressor,0.502670288,13427.4,13427.4,13427.4,13427.4,40.3,40.3,40.3,40.3
+city_temperature_f.csv,DataPartitionCompressor,0.142822266,9912.5,9912.5,9912.5,9912.5,62.9,62.9,62.9,62.9
+cms1.csv,DataPartitionCompressor,0.575317383,7326.6,7326.6,7326.6,7326.6,19.9,19.9,19.9,19.9
+cms25.csv,DataPartitionCompressor,0.727325439,10912.6,10912.6,10912.6,10912.6,18.3,18.3,18.3,18.3
+cms9.csv,DataPartitionCompressor,0.186889648,6958,6958,6958,6958,26.1,26.1,26.1,26.1
+food_prices.csv,DataPartitionCompressor,0.250061035,9275.2,9275.2,9275.2,9275.2,19.4,19.4,19.4,19.4
+gov10.csv,DataPartitionCompressor,0.480438232,7276.3,7276.3,7276.3,7276.3,154.1,154.1,154.1,154.1
+gov26.csv,DataPartitionCompressor,0.017578125,6727.5,6727.5,6727.5,6727.5,19.5,19.5,19.5,19.5
+gov30.csv,DataPartitionCompressor,0.038421631,6909,6909,6909,6909,26.4,26.4,26.4,26.4
+gov31.csv,DataPartitionCompressor,0.018539429,6929.1,6929.1,6929.1,6929.1,19.8,19.8,19.8,19.8
+gov40.csv,DataPartitionCompressor,0.05090332,7079.1,7079.1,7079.1,7079.1,19.3,19.3,19.3,19.3
+medicare1.csv,DataPartitionCompressor,0.70324707,9724.7,9724.7,9724.7,9724.7,23,23,23,23
+medicare9.csv,DataPartitionCompressor,0.205932617,6775.1,6775.1,6775.1,6775.1,18.4,18.4,18.4,18.4
+neon_air_pressure.csv,DataPartitionCompressor,0.220092773,7069.2,7069.2,7069.2,7069.2,18.9,18.9,18.9,18.9
+neon_bio_temp_c.csv,DataPartitionCompressor,0.121826172,7318.5,7318.5,7318.5,7318.5,19.8,19.8,19.8,19.8
+neon_dew_point_temp.csv,DataPartitionCompressor,0.162231445,6795.9,6795.9,6795.9,6795.9,21,21,21,21
+neon_pm10_dust.csv,DataPartitionCompressor,0.511352539,5688.6,5688.6,5688.6,5688.6,19.9,19.9,19.9,19.9
+neon_wind_dir.csv,DataPartitionCompressor,0.424041748,6643.3,6643.3,6643.3,6643.3,20.1,20.1,20.1,20.1
+nyc29.csv,DataPartitionCompressor,0.640991211,7241.8,7241.8,7241.8,7241.8,368.9,368.9,368.9,368.9
+poi_lat.csv,DataPartitionCompressor,0.978012085,9822.7,9822.7,9822.7,9822.7,223.7,223.7,223.7,223.7
+poi_lon.csv,DataPartitionCompressor,1.024658203,7098.8,7098.8,7098.8,7098.8,235.7,235.7,235.7,235.7
+ssd_hdd_benchmarks_f.csv,DataPartitionCompressor,0.267822266,9396.1,9396.1,9396.1,9396.1,33.4,33.4,33.4,33.4
+stocks_de.csv,DataPartitionCompressor,0.128540039,6997.1,6997.1,6997.1,6997.1,20.5,20.5,20.5,20.5
+stocks_uk.csv,DataPartitionCompressor,0.160644531,6805.5,6805.5,6805.5,6805.5,19.6,19.6,19.6,19.6
+stocks_usa_c.csv,DataPartitionCompressor,0.098754883,7001.6,7001.6,7001.6,7001.6,19.9,19.9,19.9,19.9

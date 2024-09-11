@@ -8,7 +8,7 @@ import org.bjtu.compress.liu.entity.DecimalSeries;
  * @author：lyx
  * @date: 2024/8/27
  */
-public class HundredDataCompressor {
+public class MergeDigitsCompressor {
 
     private DecimalSeries decimalSeries;
 
@@ -22,7 +22,10 @@ public class HundredDataCompressor {
 
     private int size;
 
-    public HundredDataCompressor(DecimalSeries decimalSeries, int blockSize, int patchSize) {
+    private int columnSize = 4;
+
+
+    public MergeDigitsCompressor(DecimalSeries decimalSeries, int blockSize, int patchSize, int columnSize) {
         this.decimalSeries = decimalSeries;
         this.blockSize = blockSize;
         this.patchSize = patchSize;
@@ -30,6 +33,7 @@ public class HundredDataCompressor {
         out = new OutputBitStream(
                 new byte[20000]);
         size = 0;
+        this.columnSize = columnSize;
     }
 
     public void compress() {
@@ -40,9 +44,9 @@ public class HundredDataCompressor {
             return;
         }
 
-        int totalDigitsLen = decimalSeries.getDigitCnt();
+        int totalDigitsLen = decimalSeries.getValidDigitCount();
 
-        int hundredNumCnt = totalDigitsLen % 3 == 0 ? totalDigitsLen / 3 : 1 + totalDigitsLen / 3;
+        int hundredNumCnt = totalDigitsLen % columnSize == 0 ? totalDigitsLen / columnSize : 1 + totalDigitsLen / columnSize;
         int patchNum = decimalSeriesSize % patchSize == 0 ? decimalSeriesSize / patchSize : (decimalSeriesSize / patchSize + 1);
 
         int[][] hundredNum = new int[hundredNumCnt][decimalSeriesSize];
@@ -51,9 +55,9 @@ public class HundredDataCompressor {
         // 处理数据，每三位数据组成一个百位的数据进行存储
         for (int i = decimalSeriesSize - 1; i >= 0; i--) {
             int patchIdx = i / patchSize;
-            for (int digitIdx = totalDigitsLen - 1, j = hundredNumCnt - 1; j >= 0; j--) {
-                for (int k = 0; k < 3 && digitIdx >= 0; k++) {
-                    hundredNum[j][i] += digits[digitIdx--][i] * (int) Math.pow(10, k);
+            for (int digitIdx = 0, j = 0; j < hundredNumCnt; j++) {
+                for (int k = 0; k < columnSize && digitIdx < totalDigitsLen; k++) {
+                    hundredNum[j][i] = hundredNum[j][i] * 10 + digits[digitIdx++][i];
                 }
 //                fixNumLen[j][patchIdx] = Math.max(fixNumLen[j][patchIdx], getBitNum(hundredNum[j][i]));
             }

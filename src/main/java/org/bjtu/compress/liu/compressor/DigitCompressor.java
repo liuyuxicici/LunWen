@@ -1,11 +1,8 @@
 package org.bjtu.compress.liu.compressor;
 
 import gr.aueb.delorean.chimp.OutputBitStream;
-import org.bjtu.compress.liu.entity.Decimal;
 import org.bjtu.compress.liu.entity.DecimalSeries;
 import org.bjtu.compress.liu.utils.Simple16bCompressor;
-
-import java.util.Arrays;
 
 /**
  * @description:
@@ -48,7 +45,7 @@ public class DigitCompressor {
 
 
         // 待存储数据
-        int totalDigitsLen = decimalSeries.getDigitCnt();
+        int totalDigitsLen = decimalSeries.getValidDigitCount();
         int patchNum = decimalSeriesSize % patchSize == 0 ? decimalSeriesSize / patchSize : (decimalSeriesSize / patchSize + 1);
         int[][] fixDigitLen = new int[totalDigitsLen][patchNum];
         int[][] fixLen = new int[totalDigitsLen][decimalSeriesSize];

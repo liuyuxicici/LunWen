@@ -32,7 +32,7 @@ public class Decimal {
     /**
      * 有效数字
      */
-    private long sigData;
+    private long validData;
 
     public Decimal(String decimalStr) throws NumberFormatException {
         this.decimalStr = decimalStr;
@@ -58,7 +58,7 @@ public class Decimal {
             } else {
                 isNegative = false;
             }
-            sigData = Math.abs(num);
+            validData = Math.abs(num);
         }
 
     }
@@ -80,8 +80,8 @@ public class Decimal {
         return lastSigDigitIndex;
     }
 
-    public long getSigData() {
-        return sigData;
+    public long getValidData() {
+        return validData;
     }
 
     public boolean isNegative() {
