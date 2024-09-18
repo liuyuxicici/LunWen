@@ -6,6 +6,12 @@ package org.bjtu.compress.liu.compressor;
  * @date: 2024/9/9
  */
 public interface ICompressor {
+    int getSize();
+
+    byte[] getBytes();
+
+    void close();
+
     default String getKey() {
         return getClass().getSimpleName();
     }

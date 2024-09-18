@@ -1,32 +1,31 @@
-FileName,CompressorName,CompressorRatio,CompressionTime,MaxCompressTime,MinCompressTime,MediaCompressTime,DecompressionTime,MaxDecompressTime,MinDecompressTime,MediaDecompressTime
-air_sensor_f.csv,DataPartitionCompressor,0.906585693,23488.6,23488.6,23488.6,23488.6,70,70,70,70
-arade4.csv,DataPartitionCompressor,0.439941406,17689.3,17689.3,17689.3,17689.3,75.7,75.7,75.7,75.7
-basel_temp_f.csv,DataPartitionCompressor,0.468383789,8702.4,8702.4,8702.4,8702.4,1735.5,1735.5,1735.5,1735.5
-basel_wind_f.csv,DataPartitionCompressor,0.465148926,8812.3,8812.3,8812.3,8812.3,47.7,47.7,47.7,47.7
-bird_migration_f.csv,DataPartitionCompressor,0.229980469,8454.3,8454.3,8454.3,8454.3,52.9,52.9,52.9,52.9
-bitcoin_f.csv,DataPartitionCompressor,0.461791992,8987.9,8987.9,8987.9,8987.9,34.8,34.8,34.8,34.8
-bitcoin_transactions_f.csv,DataPartitionCompressor,0.502670288,13427.4,13427.4,13427.4,13427.4,40.3,40.3,40.3,40.3
-city_temperature_f.csv,DataPartitionCompressor,0.142822266,9912.5,9912.5,9912.5,9912.5,62.9,62.9,62.9,62.9
-cms1.csv,DataPartitionCompressor,0.575317383,7326.6,7326.6,7326.6,7326.6,19.9,19.9,19.9,19.9
-cms25.csv,DataPartitionCompressor,0.727325439,10912.6,10912.6,10912.6,10912.6,18.3,18.3,18.3,18.3
-cms9.csv,DataPartitionCompressor,0.186889648,6958,6958,6958,6958,26.1,26.1,26.1,26.1
-food_prices.csv,DataPartitionCompressor,0.250061035,9275.2,9275.2,9275.2,9275.2,19.4,19.4,19.4,19.4
-gov10.csv,DataPartitionCompressor,0.480438232,7276.3,7276.3,7276.3,7276.3,154.1,154.1,154.1,154.1
-gov26.csv,DataPartitionCompressor,0.017578125,6727.5,6727.5,6727.5,6727.5,19.5,19.5,19.5,19.5
-gov30.csv,DataPartitionCompressor,0.038421631,6909,6909,6909,6909,26.4,26.4,26.4,26.4
-gov31.csv,DataPartitionCompressor,0.018539429,6929.1,6929.1,6929.1,6929.1,19.8,19.8,19.8,19.8
-gov40.csv,DataPartitionCompressor,0.05090332,7079.1,7079.1,7079.1,7079.1,19.3,19.3,19.3,19.3
-medicare1.csv,DataPartitionCompressor,0.70324707,9724.7,9724.7,9724.7,9724.7,23,23,23,23
-medicare9.csv,DataPartitionCompressor,0.205932617,6775.1,6775.1,6775.1,6775.1,18.4,18.4,18.4,18.4
-neon_air_pressure.csv,DataPartitionCompressor,0.220092773,7069.2,7069.2,7069.2,7069.2,18.9,18.9,18.9,18.9
-neon_bio_temp_c.csv,DataPartitionCompressor,0.121826172,7318.5,7318.5,7318.5,7318.5,19.8,19.8,19.8,19.8
-neon_dew_point_temp.csv,DataPartitionCompressor,0.162231445,6795.9,6795.9,6795.9,6795.9,21,21,21,21
-neon_pm10_dust.csv,DataPartitionCompressor,0.511352539,5688.6,5688.6,5688.6,5688.6,19.9,19.9,19.9,19.9
-neon_wind_dir.csv,DataPartitionCompressor,0.424041748,6643.3,6643.3,6643.3,6643.3,20.1,20.1,20.1,20.1
-nyc29.csv,DataPartitionCompressor,0.640991211,7241.8,7241.8,7241.8,7241.8,368.9,368.9,368.9,368.9
-poi_lat.csv,DataPartitionCompressor,0.978012085,9822.7,9822.7,9822.7,9822.7,223.7,223.7,223.7,223.7
-poi_lon.csv,DataPartitionCompressor,1.024658203,7098.8,7098.8,7098.8,7098.8,235.7,235.7,235.7,235.7
-ssd_hdd_benchmarks_f.csv,DataPartitionCompressor,0.267822266,9396.1,9396.1,9396.1,9396.1,33.4,33.4,33.4,33.4
-stocks_de.csv,DataPartitionCompressor,0.128540039,6997.1,6997.1,6997.1,6997.1,20.5,20.5,20.5,20.5
-stocks_uk.csv,DataPartitionCompressor,0.160644531,6805.5,6805.5,6805.5,6805.5,19.6,19.6,19.6,19.6
-stocks_usa_c.csv,DataPartitionCompressor,0.098754883,7001.6,7001.6,7001.6,7001.6,19.9,19.9,19.9,19.9
+FileName	CompressorName	CompressorRatio	CompressionTime	MaxCompressTime	MinCompressTime	MediaCompressTime	DecompressionTime	MaxDecompressTime	MinDecompressTime	MediaDecompressTime	
+air_sensor_f.csv	DecimalCompressor	0.9055938720703125	4183.999	4183.999	4183.999	4183.999	3328.4	3328.4	3328.4	3328.4	
+arade4.csv	DecimalCompressor	0.4434967041015625	1161.299	1161.299	1161.299	1161.299	6005.101	6005.101	6005.101	6005.101	
+basel_temp_f.csv	DecimalCompressor	0.559051513671875	1058.2	1058.2	1058.2	1058.2	939.8	939.8	939.8	939.8	
+basel_wind_f.csv	DecimalCompressor	0.5123748779296875	618.5	618.5	618.5	618.5	1281.499	1281.499	1281.499	1281.499	
+bird_migration_f.csv	DecimalCompressor	0.214599609375	665.201	665.201	665.201	665.201	653.2	653.2	653.2	653.2	
+bitcoin_f.csv	DecimalCompressor	0.390960693359375	459.7	459.7	459.7	459.7	601.6	601.6	601.6	601.6	
+bitcoin_transactions_f.csv	DecimalCompressor	0.444091796875	411.9	411.9	411.9	411.9	543.5	543.5	543.5	543.5	
+city_temperature_f.csv	DecimalCompressor	0.1794891357421875	577.5	577.5	577.5	577.5	559.299	559.299	559.299	559.299	
+cms1.csv	DecimalCompressor	0.7054443359375	508.001	508.001	508.001	508.001	657.5	657.5	657.5	657.5	
+cms25.csv	DecimalCompressor	0.6982269287109375	302.901	302.901	302.901	302.901	1290.799	1290.799	1290.799	1290.799	
+cms9.csv	DecimalCompressor	0.1679229736328125	291.0	291.0	291.0	291.0	633.6	633.6	633.6	633.6	
+food_prices.csv	DecimalCompressor	0.2030792236328125	396.8	396.8	396.8	396.8	569.801	569.801	569.801	569.801	
+gov10.csv	DecimalCompressor	0.363006591796875	465.701	465.701	465.701	465.701	634.899	634.899	634.899	634.899	
+gov26.csv	DecimalCompressor	0.0341796875	388.401	388.401	388.401	388.401	462.2	462.2	462.2	462.2	
+gov30.csv	DecimalCompressor	0.043426513671875	368.8	368.8	368.8	368.8	444.699	444.699	444.699	444.699	
+gov31.csv	DecimalCompressor	0.0368804931640625	196.4	196.4	196.4	196.4	209.9	209.9	209.9	209.9	
+gov40.csv	DecimalCompressor	0.0375213623046875	371.201	371.201	371.201	371.201	415.7	415.7	415.7	415.7	
+medicare1.csv	DecimalCompressor	0.4973907470703125	555.3	555.3	555.3	555.3	665.0	665.0	665.0	665.0	
+medicare9.csv	DecimalCompressor	0.174041748046875	472.2	472.2	472.2	472.2	531.3	531.3	531.3	531.3	
+neon_air_pressure.csv	DecimalCompressor	0.2319793701171875	425.901	425.901	425.901	425.901	546.7	546.7	546.7	546.7	
+neon_bio_temp_c.csv	DecimalCompressor	0.13360595703125	440.9	440.9	440.9	440.9	517.6	517.6	517.6	517.6	
+neon_dew_point_temp.csv	DecimalCompressor	0.1912841796875	471.0	471.0	471.0	471.0	507.901	507.901	507.901	507.901	
+neon_pm10_dust.csv	DecimalCompressor	0.0841217041015625	379.6	379.6	379.6	379.6	464.4	464.4	464.4	464.4	
+neon_wind_dir.csv	DecimalCompressor	0.2982635498046875	507.0	507.0	507.0	507.0	586.299	586.299	586.299	586.299	
+nyc29.csv	DecimalCompressor	0.3510284423828125	424.699	424.699	424.699	424.699	729.801	729.801	729.801	729.801	
+ssd_hdd_benchmarks_f.csv	DecimalCompressor	0.254791259765625	304.8	304.8	304.8	304.8	196.7	196.7	196.7	196.7	
+stocks_de.csv	DecimalCompressor	0.1392974853515625	395.299	395.299	395.299	395.299	447.801	447.801	447.801	447.801	
+stocks_uk.csv	DecimalCompressor	0.1223907470703125	347.1	347.1	347.1	347.1	430.2	430.2	430.2	430.2	
+stocks_usa_c.csv	DecimalCompressor	0.0698089599609375	203.8	203.8	203.8	203.8	217.0	217.0	217.0	217.0	
+poi_lat.csv	DecimalCompressor	1.0229339599609375	424.4	424.4	424.4	424.4	2879.2	2879.2	2879.2	2879.2	

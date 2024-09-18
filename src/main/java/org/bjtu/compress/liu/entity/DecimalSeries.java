@@ -118,17 +118,41 @@ public class DecimalSeries {
         return validData;
     }
 
-    public double[][] getValidDigitsLoc() {
+    public String[] getBinaryValidData() {
         if (size == 0) {
-            return new double[0][];
+            return new String[0];
+        }
+        String[] validData = new String[size];
+
+        for (int i = 0; i < size; i++) {
+            validData[i] = Long.toBinaryString(decimals[i].getValidData());
+
+        }
+        return validData;
+    }
+
+    public int[][] getValidDigitsLoc() {
+        if (size == 0) {
+            return new int[0][];
         }
 
-        double[][] validDigitsLoc = new double[size][2];
+        int[][] validDigitsLoc = new int[size][2];
         for (int i = 0; i < size; i++) {
             validDigitsLoc[i][0] = decimals[i].getFirstSigDigitIndex();
             validDigitsLoc[i][1] = decimals[i].getLastSigDigitIndex();
         }
         return validDigitsLoc;
+    }
+
+    public double[] getDoubleValues() {
+        if (size == 0) {
+            return new double[0];
+        }
+        double[] doubles = new double[size];
+        for (int i = 0; i < size; i++) {
+            doubles[i] = decimals[i].getDataValue();
+        }
+        return doubles;
     }
 
     public int getValidDigitCount() {

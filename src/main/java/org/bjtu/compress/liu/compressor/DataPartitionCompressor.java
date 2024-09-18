@@ -3,8 +3,9 @@ package org.bjtu.compress.liu.compressor;
 import gr.aueb.delorean.chimp.OutputBitStream;
 import org.bjtu.compress.huffman.HuffmanCoding;
 import org.bjtu.compress.liu.entity.DecimalSeries;
-import org.bjtu.compress.liu.utils.DataCompressUtils;
+import org.bjtu.compress.liu.utils.FixLengthFORCompressor;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -16,12 +17,16 @@ public class DataPartitionCompressor extends AbstractDataPartitionCompressor {
 
     HuffmanCoding huffmanCoding = new HuffmanCoding();
 
+    FixLengthFORCompressor fixLengthFORCompressor;
+
     public DataPartitionCompressor(int blockSize, int patchSize) {
         size = 0;
         out = new OutputBitStream(
                 new byte[20000]);
         this.blockSize = blockSize;
         this.patchSize = patchSize;
+
+        fixLengthFORCompressor = new FixLengthFORCompressor(patchSize);
     }
 
 
@@ -57,32 +62,67 @@ public class DataPartitionCompressor extends AbstractDataPartitionCompressor {
         int[] fixNumFrequencies = new int[11];
 
         int thisSize = 0;
+//        int patchNum = dataSize % patchSize == 0 ? dataSize / patchSize : (dataSize / patchSize + 1);
+//        int[][] fixNumLen = new int[partSize][patchNum];
+//        int[] fixNumFrequencies = new int[11];
+//
+//
+//        for (int i = 0; i < partSize; i++) {
+//            for (int j = dataSize - 1; j >= 1; j--) {
+//                partition[i][j] ^= partition[i][j - 1];
+//                fixNumLen[i][j / patchSize] = Math.max(fixNumLen[i][j / patchSize], DataUtils.getBitNum(partition[i][j]));
+//                if (j / patchSize == 0) {
+//                    fixNumFrequencies[fixNumLen[i][j / patchSize]]++;
+//                }
+//            }
+//        }
+////        huffmanCoding.buildTree(fixNumFrequencies);
+//        for (int i = 0; i < partSize; i++) {
+//            for (int j = 0; j < dataSize; j++) {
+////                out.writeLong(partition[i][j], fixNumLen[i][j / patchSize]);
+////                thisSize += fixNumLen[i][j / patchSize];
+////                thisSize += 4;
+////                thisSize++;
+//                thisSize += huffmanCoding.symbolToCode.getOrDefault(fixNumLen[i][j / patchSize], "").length();
+//                if (fixNumLen[i][j / patchSize] != 0) {
+////                    thisSize += 4;
+//                    thisSize += fixNumLen[i][j / patchSize];
+//                }
+//            }
+//        }
+        int[] partS = new int[partSize];
+
         for (int i = 0; i < partSize; i++) {
-            for (int j = dataSize - 1; j >= 1; j--) {
-                partition[i][j] ^= partition[i][j - 1];
-                fixNumLen[i][j / patchSize] = Math.max(fixNumLen[i][j / patchSize], DataCompressUtils.getBitNum(partition[i][j]));
-                if (j / patchSize == 0) {
-                    fixNumFrequencies[fixNumLen[i][j / patchSize]]++;
-                }
-            }
-        }
-//        huffmanCoding.buildTree(fixNumFrequencies);
-        for (int i = 0; i < partSize; i++) {
-            for (int j = 0; j < dataSize; j++) {
-//                out.writeLong(partition[i][j], fixNumLen[i][j / patchSize]);
-//                thisSize += fixNumLen[i][j / patchSize];
-//                thisSize += 4;
-//                thisSize++;
-                thisSize += huffmanCoding.symbolToCode.getOrDefault(fixNumLen[i][j / patchSize], "").length();
-                if (fixNumLen[i][j / patchSize] != 0) {
-//                    thisSize += 4;
-                    thisSize += fixNumLen[i][j / patchSize];
-                }
-            }
+            partS[i] = smallVarianceCompress(partition[i]);
+            thisSize += partS[i];
         }
 
+//        int[] dict = fixLengthFORCompressor.getDict();
+//        huffmanCoding.buildTree(dict);
+//
+//        Arrays.sort(dict);
+
+//        for (int i = 0; i < partSize; i++) {
+//            for (int j = 0; j < dataSize; j++) {
+//                thisSize += huffmanCoding.symbolToCode.getOrDefault((int) partition[i][j], "").length();
+//
+//            }
+//        }
+
+        List<Long> patchMaxValues = fixLengthFORCompressor.getPatchMaxValues();
+        long[] array = patchMaxValues.stream().mapToLong(Long::longValue).toArray();
+        thisSize += smallVarianceCompress(array);
 
         System.out.println(thisSize);
+        return thisSize;
+    }
+
+    public int smallVarianceCompress(long[] partition) {
+        int thisSize = 0;
+
+        for (long num : partition) {
+            thisSize += fixLengthFORCompressor.addValue(num);
+        }
         return thisSize;
     }
 

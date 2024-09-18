@@ -2,12 +2,11 @@ package org.bjtu.compress.liu.analysis;
 
 import org.bjtu.compress.liu.DataReader;
 import org.bjtu.compress.liu.entity.DecimalSeries;
-import org.bjtu.compress.liu.iforest.IForest;
-import org.bjtu.compress.liu.iforest.IsoForest;
-import org.ejml.data.DenseMatrix64F;
+import org.bjtu.compress.liu.utils.DataProcessUtils;
+import org.bjtu.compress.liu.utils.DataUtils;
+import sun.misc.DoubleConsts;
 
 import java.io.FileNotFoundException;
-import java.util.List;
 
 /**
  * @description: 数据分析
@@ -44,7 +43,7 @@ public class DataAnalysis {
 //            "/POI-lat.csv",
 //            "/POI-lon.csv"
 
-//            "air_sensor_f.csv",
+            "air_sensor_f.csv",
 //            "arade4.csv",
 //            "basel_temp_f.csv",
 //            "basel_wind_f.csv",
@@ -52,7 +51,7 @@ public class DataAnalysis {
 //            "bitcoin_f.csv",
 //            "bitcoin_transactions_f.csv",
 //            "city_temperature_f.csv",
-            "cms1.csv",
+//            "cms1.csv",
 //            "cms25.csv",
 //            "cms9.csv",
 //            "food_prices.csv",
@@ -83,8 +82,10 @@ public class DataAnalysis {
         int patchSize = 8;
 
         for (String filename : FILENAMES) {
+            System.out.println(filename);
             DataReader dataReader = new DataReader(FILE_PATH + filename, blockSize, patchSize);
             DecimalSeries decimalSeries;
+            int[] binary1Count = new int[64];
             while ((decimalSeries = dataReader.nextBlock2Decimals()) != null) {
 
 //                double[][] validDigitsLoc = decimalSeries.getValidDigitsLoc();
@@ -98,8 +99,18 @@ public class DataAnalysis {
 //                    predict[i] = forest.predict(denseMatrix64F);
 //                }
 //                System.out.println(predict);
-
+//                long[] validData = decimalSeries.getValidData();
+//                for (long validDatum : validData) {
+//                    int sNum = DataUtils.get1sNum(validDatum);
+//                    binary1Count[sNum]++;
+//                    System.out.println(sNum + " ");
+//                }
+                int x = -17;
+                int zigzag = (x << 1) ^ (x >> 31);
+                int decode = (zigzag >> 1) ^ -(zigzag & 1);
+                System.out.println(decode);
             }
+
         }
 
     }

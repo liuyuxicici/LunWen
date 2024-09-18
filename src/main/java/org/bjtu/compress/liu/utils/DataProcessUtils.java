@@ -6,9 +6,7 @@ import org.bjtu.compress.liu.iforest.IForest;
 import org.bjtu.compress.liu.iforest.IsoForest;
 import org.ejml.data.DenseMatrix64F;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @description: 数据处理工具类
@@ -17,10 +15,45 @@ import java.util.List;
  */
 public class DataProcessUtils {
 
-    public static final double[] i_F10 = {1.0, 0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001, 0.0000001};
-    public static final long[] F10 = {1l, 10l, 100l, 1000l, 10000l, 100000l, 1000000l, 10000000l, 100000000l, 1000000000l,
-            10000000000l, 100000000000l, 1000000000000l, 10000000000000l, 100000000000000l, 1000000000000000l, 10000000000000000l,
-            100000000000000000l, 1000000000000000000l};
+
+    /**
+     * 数据最低有效位采样
+     *
+     * @param data
+     * @return
+     */
+    public static int leastSignificantBitsSample(DecimalSeries data) {
+        int[][] validDigitsLoc = data.getValidDigitsLoc();
+        Map<Integer, Integer> bitsCount = new HashMap<>();
+        for (int i = 0; i < validDigitsLoc.length; i++) {
+            if (!bitsCount.containsKey(validDigitsLoc[i][1])) {
+                bitsCount.put(validDigitsLoc[i][1], 1);
+            } else {
+                bitsCount.put(validDigitsLoc[i][1], bitsCount.get(validDigitsLoc[i][1]) + 1);
+            }
+        }
+
+        return data.getLastDigitIndex();
+    }
+
+    /**
+     * 等距采样
+     *
+     * @param data
+     * @param sampleCount
+     * @return
+     */
+    public static DecimalSeries systematicSample(DecimalSeries data, int sampleCount) {
+        int size = data.getSize();
+        int subSampleInterval = size / sampleCount;
+        int first = new Random().nextInt(subSampleInterval);
+        DecimalSeries samples = new DecimalSeries(sampleCount);
+
+        for (int i = first; i < size; i += subSampleInterval) {
+            samples.addValue(data.getDecimals()[i]);
+        }
+        return samples;
+    }
 
     /**
      * 异常数据检测、正常数据对其
@@ -33,7 +66,7 @@ public class DataProcessUtils {
     public static DecimalSeries handleExcData(DecimalSeries data, DecimalSeries excData, List<Integer> excPosition) {
         int size = data.getSize();
         Decimal[] decimals = data.getDecimals();
-        double[][] validDigitsLoc = data.getValidDigitsLoc();
+        int[][] validDigitsLoc = data.getValidDigitsLoc();
         IsoForest isoForest = new IsoForest();
         IForest forest = isoForest.train(validDigitsLoc);
         int[] predict = new int[size];
@@ -116,6 +149,16 @@ public class DataProcessUtils {
         if (validCols > 0) {
             partition.add(validCols);
         }
+//        partition.add(validCols);
+
+
+//        if (validCols > 3) {
+//            partition.add(validCols - 3);
+//            partition.add(3);
+//
+//        } else {
+//            partition.add(validCols);
+//        }
 
         return partition;
     }
@@ -123,54 +166,19 @@ public class DataProcessUtils {
     /**
      * 数据分区
      *
-     * @param data
-     * @param validCols
-     * @return
+     * @param digits
      */
-    public static List<Integer> dataPartition(long[] data, int validCols) {
-        int size = data.length;
-
-        // 预计算区间0到i的有效数字
-//        long[][] dataPtr = new long[validCols][size];
-//        for (int i = 0; i < validCols; i++) {
-//            for (int j = 0; j < size; j++) {
-//                dataPtr[j][i] = data[j] % (long)Math.pow(10, i + 1);
-//            }
-//        }
-
-        int maxMergeCols = 8;
-        double[] minExcBits = new double[validCols];
-        Arrays.fill(minExcBits, Double.MAX_VALUE);
-        int[] subareaRoot = new int[validCols];
-        long[] firstValidDigits = getValidDigits(data, 0, 0);
-        double firstValidDigitsMaxBits = calculateXorAndGetAvgBits(firstValidDigits);
-        minExcBits[0] = firstValidDigitsMaxBits;
-        subareaRoot[0] = 0;
-        for (int i = 1; i < validCols; i++) {
-            int leftPtr = Math.max(i - maxMergeCols + 1, 0);
-            for (int j = leftPtr; j <= i; j++) {
-                double mergedAvgBits = calculateXorAndGetAvgBits(getValidDigits(data, j, i));
-
-                if (j >= 1 && minExcBits[j - 1] + mergedAvgBits < minExcBits[i]) {
-                    minExcBits[i] = minExcBits[j - 1] + mergedAvgBits;
-                    subareaRoot[i] = j;
-                }
-                if (j == 0 && mergedAvgBits < minExcBits[i]) {
-                    minExcBits[i] = mergedAvgBits;
-                    subareaRoot[i] = 0;
-                }
-
+    public static List<Integer> dataPartition(int[][] digits) {
+        int validNum = digits.length;
+        int dataSize = digits[0].length;
+        int[] representBitsPerPatchDP = new int[validNum];
+        long[] mergedData = new long[validNum];
+        for (int i = 0; i < validNum; i++) {
+            for (int j = 0; j < dataSize; j++) {
+                mergedData[j] = mergedData[j] * 10 + digits[i][j];
             }
         }
-
-        List<Integer> subArea = new ArrayList<>();
-        int index = validCols - 1;
-        while (index >= 0) {
-            subArea.add(index - subareaRoot[index] + 1);
-            index = subareaRoot[index] - 1;
-        }
-
-        return subArea;
+        return null;
     }
 
     private static long[] getValidDigits(long[] data, int minValidLoc, int maxValidLoc) {

@@ -13,15 +13,15 @@ import org.apache.hadoop.io.IOUtils;
 import org.apache.hadoop.io.compress.CompressionInputStream;
 import org.apache.hadoop.io.compress.CompressionOutputStream;
 import org.bjtu.compress.liu.DataReader;
-import org.bjtu.compress.liu.compressor.AbstractDataPartitionCompressor;
-import org.bjtu.compress.liu.compressor.DataPartitionCompressor;
-import org.bjtu.compress.liu.compressor.DigitCompressor;
-import org.bjtu.compress.liu.compressor.MergeDigitsCompressor;
+import org.bjtu.compress.liu.compressor.*;
+import org.bjtu.compress.liu.decompressor.AbstractDecimalDecompressor;
+import org.bjtu.compress.liu.decompressor.DecimalDecompressor;
 import org.bjtu.compress.liu.decompressor.DigitDecompressor;
 import org.bjtu.compress.liu.entity.DecimalSeries;
 import org.bjtu.compress.oran.compressor.HuffCompressor;
 import org.junit.jupiter.api.Test;
 import org.urbcomp.startdb.compress.elf.compressor.*;
+import org.urbcomp.startdb.compress.elf.compressor.ICompressor;
 import org.urbcomp.startdb.compress.elf.decompressor.*;
 import org.urbcomp.startdb.compress.elf.doubleprecision.FileReader;
 import org.urbcomp.startdb.compress.elf.doubleprecision.ResultStructure;
@@ -92,13 +92,13 @@ public class TestCompressor {
             "neon_pm10_dust.csv",
             "neon_wind_dir.csv",
             "nyc29.csv",
-            "poi_lat.csv",
-            "poi_lon.csv",
+
             "ssd_hdd_benchmarks_f.csv",
             "stocks_de.csv",
             "stocks_uk.csv",
             "stocks_usa_c.csv",
-
+            "poi_lat.csv",
+//            "poi_lon.csv",
     };
     private static final String STORE_RESULT = "src/test/resources/result/result.csv";
 
@@ -120,7 +120,8 @@ public class TestCompressor {
 //            testXz(filename, result);
 //            testDigitCompressor(filename, result);
 //            testHundredDigitCompressor(filename, result);
-            testDataPartitionCompressor(filename, result);
+//            testDataPartitionCompressor(filename, result);
+            testDecimalCompressor(filename, result);
             for (Map.Entry<String, List<ResultStructure>> kv : result.entrySet()) {
                 Map<String, ResultStructure> r = new HashMap<>();
                 r.put(kv.getKey(), computeAvg(kv.getValue()));
@@ -134,6 +135,77 @@ public class TestCompressor {
         storeResult();
 
     }
+
+    private void testDecimalCompressor(String filename, Map<String, List<ResultStructure>> resultCompressor) throws IOException {
+        int blockSize = 1024;
+        int patchSize = 32;
+        DataReader dataReader = new DataReader(FILE_PATH + filename, blockSize, patchSize);
+
+        float totalBlocks = 0;
+        DecimalSeries decimalSeries;
+
+        HashMap<String, List<Double>> totalCompressionTime = new HashMap<>();
+        HashMap<String, List<Double>> totalDecompressionTime = new HashMap<>();
+        HashMap<String, Long> key2TotalSize = new HashMap<>();
+
+        while ((decimalSeries = dataReader.nextBlock2Decimals()) != null) {
+            totalBlocks += 1;
+
+            AbstractDecimalCompressor decimalCompressor = new DecimalCompressor();
+
+            double encodingDuration;
+            double decodingDuration;
+            long start = System.nanoTime();
+
+            decimalCompressor.compressValue(decimalSeries);
+            int size = decimalCompressor.getSize();
+
+            encodingDuration = System.nanoTime() - start;
+
+            byte[] bytes = decimalCompressor.getBytes();
+
+
+//            DigitDecompressor digitDecompressor = new DigitDecompressor(bytes);
+            AbstractDecimalDecompressor decimalDecompressor = new DecimalDecompressor(bytes);
+            String key = decimalCompressor.getKey();
+            if (!totalCompressionTime.containsKey(key)) {
+                totalCompressionTime.put(key, new ArrayList<>());
+                totalDecompressionTime.put(key, new ArrayList<>());
+                key2TotalSize.put(key, 0L);
+            }
+
+
+            start = System.nanoTime();
+            List<Double> uncompressedValues = decimalDecompressor.decompress(decimalCompressor.getBias());
+
+            decodingDuration = System.nanoTime() - start;
+            double[] values = decimalSeries.getDoubleValues();
+            for (int j = 0; j < values.length; j++) {
+                assertEquals(values[j], uncompressedValues.get(j), "Value did not match " + decimalCompressor.getKey()
+                        + " block:" + totalBlocks
+                        + " filename:" + filename + ",line:" + j);
+            }
+            totalCompressionTime.get(key).add(encodingDuration / TIME_PRECISION);
+            totalDecompressionTime.get(key).add(decodingDuration / TIME_PRECISION);
+            key2TotalSize.put(key, decimalCompressor.getSize() + key2TotalSize.get(key));
+        }
+
+        for (Map.Entry<String, Long> kv : key2TotalSize.entrySet()) {
+            String key = kv.getKey();
+            Long totalSize = kv.getValue();
+            ResultStructure r = new ResultStructure(filename, key,
+                    totalSize / (totalBlocks * blockSize * 64.0),
+                    totalCompressionTime.get(key),
+                    totalDecompressionTime.get(key)
+
+            );
+            if (!resultCompressor.containsKey(key)) {
+                resultCompressor.put(key, new ArrayList<>());
+            }
+            resultCompressor.get(key).add(r);
+        }
+    }
+
 
     private void testDataPartitionCompressor(String filename, Map<String, List<ResultStructure>> resultCompressor) throws IOException {
         int blockSize = 1024;

@@ -37,19 +37,13 @@ public class DataCompressorSupport {
         return blockSize;
     }
 
-    public void setBlockSize(int blockSize) {
-        this.blockSize = blockSize;
-    }
-
     public int getPatchSize() {
         return patchSize;
     }
 
-    public void setPatchSize(int patchSize) {
-        this.patchSize = patchSize;
-    }
 
     public byte[] getBytes() {
         return out.getBuffer();
     }
+
 }

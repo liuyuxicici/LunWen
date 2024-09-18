@@ -45,6 +45,7 @@ public class ElfCompressor extends AbstractElfCompressor {
 
     @Override
     public Map<Integer, Integer> getMap() {
-        return xorCompressor.getMap();
+        return null;
     }
+
 }

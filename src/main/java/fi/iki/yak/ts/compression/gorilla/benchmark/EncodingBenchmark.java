@@ -52,11 +52,11 @@ public class EncodingBenchmark {
 
             insertList = new ArrayList<>(amountOfPoints);
 
-            ByteBuffer bb = ByteBuffer.allocate(amountOfPoints * 2*Long.BYTES);
+            ByteBuffer bb = ByteBuffer.allocate(amountOfPoints * 2 * Long.BYTES);
 
             pairs = new ArrayList<>(amountOfPoints);
 
-            for(int i = 0; i < amountOfPoints; i++) {
+            for (int i = 0; i < amountOfPoints; i++) {
                 now += 60;
                 bb.putLong(now);
                 bb.putDouble(i);
@@ -79,9 +79,9 @@ public class EncodingBenchmark {
 
             bb.flip();
 
-            for(int j = 0; j < amountOfPoints; j++) {
-//                c.addValue(bb.getLong(), bb.getLong());
-            	bb.getLong();
+            for (int j = 0; j < amountOfPoints; j++) {
+//                c.encodeValue(bb.getLong(), bb.getLong());
+                bb.getLong();
                 c.addValue(bb.getDouble());
                 gc.addValue(uncompressedTimestamps[j], uncompressedDoubles[j]);
             }
@@ -97,14 +97,14 @@ public class EncodingBenchmark {
         }
     }
 
-//    @Benchmark
+    //    @Benchmark
     @OperationsPerInvocation(100000)
     public void encodingBenchmark(DataGenerator dg) {
         ByteBufferBitOutput output = new ByteBufferBitOutput();
         Compressor c = new Compressor(output);
 
-        for(int j = 0; j < dg.amountOfPoints; j++) {
-        	dg.uncompressedBuffer.getLong();
+        for (int j = 0; j < dg.amountOfPoints; j++) {
+            dg.uncompressedBuffer.getLong();
             c.addValue(dg.uncompressedBuffer.getDouble());
         }
         c.close();
@@ -118,7 +118,7 @@ public class EncodingBenchmark {
         ByteBufferBitInput input = new ByteBufferBitInput(duplicate);
         Decompressor d = new Decompressor(input);
         Value pair;
-        while((pair = d.readPair()) != null) {
+        while ((pair = d.readPair()) != null) {
             bh.consume(pair);
         }
     }
@@ -129,7 +129,7 @@ public class EncodingBenchmark {
         LongArrayOutput output = new LongArrayOutput();
         GorillaCompressor c = new GorillaCompressor(dg.blockStart, output);
 
-        for(int j = 0; j < dg.amountOfPoints; j++) {
+        for (int j = 0; j < dg.amountOfPoints; j++) {
             c.addValue(dg.uncompressedTimestamps[j], dg.uncompressedDoubles[j]);
         }
         c.close();
@@ -141,7 +141,7 @@ public class EncodingBenchmark {
         LongArrayOutput output = new LongArrayOutput();
         GorillaCompressor c = new GorillaCompressor(dg.blockStart, output);
 
-        for(int j = 0; j < dg.amountOfPoints; j++) {
+        for (int j = 0; j < dg.amountOfPoints; j++) {
             c.addValue(dg.uncompressedTimestamps[j], dg.uncompressedValues[j]);
         }
         c.close();
@@ -163,7 +163,7 @@ public class EncodingBenchmark {
         LongArrayInput input = new LongArrayInput(dg.compressedArray);
         GorillaDecompressor d = new GorillaDecompressor(input);
         Pair pair;
-        while((pair = d.readPair()) != null) {
+        while ((pair = d.readPair()) != null) {
             bh.consume(pair);
         }
     }

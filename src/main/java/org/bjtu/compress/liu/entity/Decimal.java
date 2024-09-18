@@ -9,10 +9,23 @@ import org.apache.commons.lang.StringUtils;
  */
 public class Decimal {
 
+    private double dataValue;
+
+
     /**
      * 数据的符号串表示
      */
     private String decimalStr;
+
+    /**
+     * 整数部分数值
+     */
+    private long integerValue;
+
+    /**
+     * 小数部分数值
+     */
+    private long fractionValue;
 
     /**
      * 符号位表示
@@ -36,6 +49,11 @@ public class Decimal {
 
     public Decimal(String decimalStr) throws NumberFormatException {
         this.decimalStr = decimalStr;
+        this.dataValue = Double.parseDouble(decimalStr);
+        String[] splitStringByDecimal = splitStringByDecimal(decimalStr);
+        integerValue = Math.abs(Long.parseLong(splitStringByDecimal[0]));
+        fractionValue = Long.parseLong(splitStringByDecimal[1]);
+
         if (StringUtils.isNotBlank(decimalStr)) {
 
 
@@ -49,8 +67,8 @@ public class Decimal {
                 index++;
             }
 
-            firstSigDigitIndex = decimalIndex - index;
-            lastSigDigitIndex = decimalIndex - decimalStr.length() + 1;
+            firstSigDigitIndex = decimalIndex - index - 1;
+            lastSigDigitIndex = decimalIndex - decimalStr.length();
 
             long num = Long.parseLong(decimalStr);
             if (num < 0) {
@@ -63,6 +81,26 @@ public class Decimal {
 
     }
 
+    public Decimal(boolean isNegative, long integerValue, long fractionValue, int leastValidPos) {
+        StringBuffer value = new StringBuffer();
+        if (isNegative) {
+            value.append("-");
+        }
+        value.append(integerValue);
+        value.append(".");
+        if (leastValidPos >= 0) {
+
+        } else {
+            int fractionValueDigitLen = Long.toString(fractionValue).length();
+            while (fractionValueDigitLen < -leastValidPos) {
+                value.append(0);
+                fractionValueDigitLen++;
+            }
+            value.append(fractionValue);
+        }
+
+        dataValue = Double.parseDouble(value.toString());
+    }
 
     public String getDecimalStr() {
         return decimalStr;
@@ -87,6 +125,19 @@ public class Decimal {
     public boolean isNegative() {
         return isNegative;
     }
+
+    public double getDataValue() {
+        return dataValue;
+    }
+
+    public long getIntegerValue() {
+        return integerValue;
+    }
+
+    public long getFractionValue() {
+        return fractionValue;
+    }
+
 
     private static String[] splitStringByDecimal(String input) {
         if (input.contains(".")) {

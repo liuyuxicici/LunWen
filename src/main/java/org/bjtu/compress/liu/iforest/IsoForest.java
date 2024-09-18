@@ -3,8 +3,10 @@ package org.bjtu.compress.liu.iforest;
 import org.ejml.data.DenseMatrix64F;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 /**
  * @description: 构建孤立森林
@@ -24,6 +26,17 @@ public class IsoForest {
      */
     public DenseMatrix64F loadData(double[][] data) {
         DenseMatrix64F denseMatrix64F = new DenseMatrix64F(data);
+        return denseMatrix64F;
+    }
+
+    public DenseMatrix64F loadData(int[][] data) {
+        double[][] doubleData = new double[data.length][data[0].length];
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[0].length; j++) {
+                doubleData[i][j] = data[i][j];
+            }
+        }
+        DenseMatrix64F denseMatrix64F = new DenseMatrix64F(doubleData);
         return denseMatrix64F;
     }
 
@@ -56,7 +69,7 @@ public class IsoForest {
      * @param data
      * @return
      */
-    public IForest train(double[][] data) {
+    public IForest train(int[][] data) {
         DenseMatrix64F dataset = loadData(data);
         int rows = dataset.numRows;
 
