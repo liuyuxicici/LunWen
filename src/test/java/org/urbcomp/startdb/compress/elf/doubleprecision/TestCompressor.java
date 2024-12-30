@@ -129,10 +129,10 @@ public class TestCompressor {
 
                 compressor.close();
 
-                Map<Integer, Integer> rmp = compressor.getMap();
-                for (int k = 0; k < 66; k++) {
-                    mp.put(k, rmp.get(k) + mp.get(k));
-                }
+//                Map<Integer, Integer> rmp = compressor.getMap();
+//                for (int k = 0; k < 66; k++) {
+//                    mp.put(k, rmp.get(k) + mp.get(k));
+//                }
 
                 encodingDuration = System.nanoTime() - start;
 

@@ -98,7 +98,7 @@ public class DecimalXORCompressor {
 
 
             // case 0: 尾部0的数据比前一个存储的数据更大或相同， 存储有效位
-            if (trailingZeros == storedTrailingZeros
+            if (trailingZeros >= storedTrailingZeros
                     && penalty >= -storedTrailingZerosCount * 0.0
             ) {
                 storedTrailingZerosCount++;

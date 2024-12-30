@@ -25,11 +25,19 @@ public class DecimalDecompressor extends AbstractDecimalDecompressor {
     protected boolean[] signDecompress(int size) {
         boolean[] signs = new boolean[size];
         for (int i = 0; i < size; i += patchSize) {
-            int flag = readBit();
+            if (readBit() == 1) {
 
-            if (flag == 1) {
-                for (int pIdx = 0, cnt = i; pIdx < patchSize && cnt < dataSize; pIdx++, cnt++) {
-                    signs[cnt] = readBit() == 0 ? false : true;
+                if (readBit() == 1) {  // case 11
+                    for (int pIdx = 0, cnt = i; pIdx < patchSize; pIdx++, cnt++) {
+                        int signBit = readBit();
+                        if (cnt < dataSize) {
+                            signs[cnt] = signBit == 1 ? true : false;
+                        }
+                    }
+                } else {   // case 10
+                    for (int j = i; j < i + patchSize && j < dataSize; j++) {
+                        signs[j] = true;
+                    }
                 }
             }
 

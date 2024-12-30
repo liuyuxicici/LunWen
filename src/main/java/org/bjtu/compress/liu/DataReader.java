@@ -46,7 +46,7 @@ public class DataReader {
     /**
      * 读取下一块浮点数数据，分别存储整数部分和小数部分
      *
-     * @return 返回二维数组，一共包含三列数据，数组第一列为表示数值的正负（0为正数，1为负数），数组第二列存储整数部分，第三列存储小数部分
+     * @return
      */
     public DecimalSeries nextBlock2Decimals() {
         DecimalSeries decimalSeries = new DecimalSeries(blockSize);

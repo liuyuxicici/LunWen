@@ -26,6 +26,7 @@ public class DecimalCompressor extends AbstractDecimalCompressor {
     public int signCompress(boolean[] sign) {
         int dataSize = sign.length;
         int thisSize = 0;
+        long maxSignOfPatch = (1L << patchSize) - 1;
         // 符号位存储
         for (int i = 0; i < dataSize; i += patchSize) {
             long signsOfPatch = 0;
@@ -35,10 +36,13 @@ public class DecimalCompressor extends AbstractDecimalCompressor {
             if (signsOfPatch == 0) {
                 writeBit(false);
                 thisSize++;
+            } else if (signsOfPatch == maxSignOfPatch) {
+                writeInt(2, 2); // case 10
+                thisSize += 2;
             } else {
-                writeBit(true);
+                writeInt(3, 2); // case 11
                 writeLong(signsOfPatch, patchSize);
-                thisSize += patchSize + 1;
+                thisSize += patchSize + 2;
             }
         }
 

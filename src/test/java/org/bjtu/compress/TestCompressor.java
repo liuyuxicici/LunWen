@@ -1,6 +1,7 @@
 package org.bjtu.compress;
 
 import com.github.kutschkem.fpc.FpcCompressor;
+import gr.aueb.delorean.chimp.InputBitStream;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.CommonConfigurationKeys;
 import org.apache.hadoop.hbase.HBaseConfiguration;
@@ -15,6 +16,7 @@ import org.apache.hadoop.io.compress.CompressionOutputStream;
 import org.bjtu.compress.liu.DataReader;
 import org.bjtu.compress.liu.compressor.*;
 import org.bjtu.compress.liu.decompressor.AbstractDecimalDecompressor;
+import org.bjtu.compress.liu.decompressor.AptDecompressor;
 import org.bjtu.compress.liu.decompressor.DecimalDecompressor;
 import org.bjtu.compress.liu.decompressor.DigitDecompressor;
 import org.bjtu.compress.liu.entity.DecimalSeries;
@@ -38,25 +40,25 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestCompressor {
-    private static final String FILE_PATH = "src/test/resources/testData/";
+    private static final String FILE_PATH = "src/test/resources/ElfTestData/";
 
     private static final String[] FILENAMES = {
             //time series
 //            "/City-temp.csv",
-//            "/IR-bio-temp.csv",
-//            "/Dew-point-temp.csv",
-//            "/Wind-Speed.csv",
-//            "/Stocks-UK.csv",
-//            "/Stocks-USA.csv",
-//            "/Stocks-DE.csv",
-//            "/PM10-dust.csv",
-//            "/Bitcoin-price.csv",
-//            "/Air-pressure.csv",
-//            "/Bird-migration.csv",
-//            "/Basel-temp.csv",
-//            "/Basel-wind.csv",
-//            "/Air-sensor.csv",
-//            "/Air-pressure.csv",
+            "/IR-bio-temp.csv",
+            "/Dew-point-temp.csv",
+            "/Wind-Speed.csv",
+            "/Stocks-UK.csv",
+            "/Stocks-USA.csv",
+            "/Stocks-DE.csv",
+            "/PM10-dust.csv",
+            "/Bitcoin-price.csv",
+            "/Air-pressure.csv",
+            "/Bird-migration.csv",
+            "/Basel-temp.csv",
+            "/Basel-wind.csv",
+            "/Air-sensor.csv",
+            "/Air-pressure.csv",
 //            //normal series
 //            "/SSD-bench.csv",
 //            "/electric_vehicle_charging.csv",
@@ -67,40 +69,100 @@ public class TestCompressor {
 //            "/POI-lat.csv",
 //            "/POI-lon.csv"
 
-            "air_sensor_f.csv",
-            "arade4.csv",
-            "basel_temp_f.csv",
-            "basel_wind_f.csv",
-            "bird_migration_f.csv",
-            "bitcoin_f.csv",
-            "bitcoin_transactions_f.csv",
-            "city_temperature_f.csv",
-            "cms1.csv",
-            "cms25.csv",
-            "cms9.csv",
-            "food_prices.csv",
-            "gov10.csv",
-            "gov26.csv",
-            "gov30.csv",
-            "gov31.csv",
-            "gov40.csv",
-            "medicare1.csv",
-            "medicare9.csv",
-            "neon_air_pressure.csv",
-            "neon_bio_temp_c.csv",
-            "neon_dew_point_temp.csv",
-            "neon_pm10_dust.csv",
-            "neon_wind_dir.csv",
-            "nyc29.csv",
+//            "air_sensor_f.csv",
+//            "arade4.csv",
+//            "basel_temp_f.csv",
+//            "basel_wind_f.csv",
+//            "bird_migration_f.csv",
+//            "bitcoin_f.csv",
+//            "bitcoin_transactions_f.csv",
+//            "city_temperature_f.csv",
+//            "cms1.csv",
+//            "cms25.csv",
+//            "cms9.csv",
+//            "food_prices.csv",
+//            "gov10.csv",
+//            "gov26.csv",
+//            "gov30.csv",
+//            "gov31.csv",
+//            "gov40.csv",
+//            "medicare1.csv",
+//            "medicare9.csv",
+//            "neon_air_pressure.csv",
+//            "neon_bio_temp_c.csv",
+//            "neon_dew_point_temp.csv",
+//            "neon_pm10_dust.csv",
+//            "neon_wind_dir.csv",
+//            "nyc29.csv",
+//
+//            "ssd_hdd_benchmarks_f.csv",
+//            "stocks_de.csv",
+//            "stocks_uk.csv",
+//            "stocks_usa_c.csv",
+//            "poi_lat.csv",
+////            "poi_lon.csv",
+//            "City-lat.csv",
+//            "City-lon.csv",
 
-            "ssd_hdd_benchmarks_f.csv",
-            "stocks_de.csv",
-            "stocks_uk.csv",
-            "stocks_usa_c.csv",
-            "poi_lat.csv",
-//            "poi_lon.csv",
+
+            // 时间序列数据
+////            Air-Pressure
+//            "neon_air_pressure.csv",
+////            Basel-temp
+//            "basel_temp_f.csv",
+////           Basel-wind
+//            "basel_wind_f.csv",
+////            Bird-migration
+//            "bird_migration_f.csv",
+////            Bitcoin-price
+//            "bitcoin_f.csv",
+////            City-Temp
+//            "city_temperature_f.csv",
+////            Dew-Point-Temp
+//            "neon_dew_point_temp.csv",
+////            IR-bio-temp
+//            "neon_bio_temp_c.csv",
+////            PM10-dust
+//            "neon_pm10_dust.csv",
+////            Stocks-DE
+//            "stocks_de.csv",
+////            Stocks-UK
+//            "stocks_uk.csv",
+////            Stocks-USA
+//            "stocks_usa_c.csv",
+////            Wind-dir
+//            "neon_wind_dir.csv",
+//            // 非时序数据
+////            Arade/4
+//            "arade4.csv",
+////            Blockchain-tr
+//            "bitcoin_transactions_f.csv",
+////            CMS/1
+//            "cms1.csv",
+////            CMS/25
+//            "cms25.csv",
+////            CMS/9
+//            "cms9.csv",
+////            Food-prices
+//            "food_prices.csv",
+////            Gov/10
+////            Gov/26
+////            Gov/30
+////            Gov/31
+////            Gov/40
+//            "gov10.csv",
+//            "gov26.csv",
+//            "gov30.csv",
+//            "gov31.csv",
+//            "gov40.csv",
+////            Medicare/1
+////            Medicare/9
+//            "medicare1.csv",
+//            "medicare9.csv",
+////            NYC/29
+//            "nyc29.csv",
     };
-    private static final String STORE_RESULT = "src/test/resources/result/result.csv";
+    private static final String STORE_RESULT = "src/test/resources/result/result_ryu.csv";
 
     private static final double TIME_PRECISION = 1000.0;
     List<Map<String, ResultStructure>> allResult = new ArrayList<>();
@@ -121,6 +183,7 @@ public class TestCompressor {
 //            testDigitCompressor(filename, result);
 //            testHundredDigitCompressor(filename, result);
 //            testDataPartitionCompressor(filename, result);
+            testApbCompressor(filename, result);
             testDecimalCompressor(filename, result);
             for (Map.Entry<String, List<ResultStructure>> kv : result.entrySet()) {
                 Map<String, ResultStructure> r = new HashMap<>();
@@ -134,6 +197,76 @@ public class TestCompressor {
         }
         storeResult();
 
+    }
+
+    private void testApbCompressor(String filename, Map<String, List<ResultStructure>> resultCompressor) throws IOException {
+        int blockSize = 1024;
+        int patchSize = 32;
+        DataReader dataReader = new DataReader(FILE_PATH + filename, blockSize, patchSize);
+
+        float totalBlocks = 0;
+        DecimalSeries decimalSeries;
+
+        double[] values = null;
+        HashMap<String, List<Double>> totalCompressionTime = new HashMap<>();
+        HashMap<String, List<Double>> totalDecompressionTime = new HashMap<>();
+        HashMap<String, Long> key2TotalSize = new HashMap<>();
+
+        while ((decimalSeries = dataReader.nextBlock2Decimals()) != null) {
+            totalBlocks += 1;
+
+            AptCompressor aptCompressor = new AptCompressor(blockSize, patchSize);
+
+            double encodingDuration;
+            double decodingDuration;
+            long start = System.nanoTime();
+
+            aptCompressor.compressValue(decimalSeries);
+
+            encodingDuration = System.nanoTime() - start;
+
+            byte[] bytes = aptCompressor.getBytes();
+
+
+            AptDecompressor aptDecompressor = new AptDecompressor(blockSize, patchSize, new InputBitStream(bytes));
+            String key = aptCompressor.getKey();
+            if (!totalCompressionTime.containsKey(key)) {
+                totalCompressionTime.put(key, new ArrayList<>());
+                totalDecompressionTime.put(key, new ArrayList<>());
+                key2TotalSize.put(key, 0L);
+            }
+
+
+            start = System.nanoTime();
+            double[] uncompressedValues = aptDecompressor.decompress();
+
+            decodingDuration = System.nanoTime() - start;
+
+            values = decimalSeries.getDoubleValues();
+            for (int j = 0; j < values.length; j++) {
+                assertEquals(values[j], uncompressedValues[j], "Value did not match " + aptCompressor.getKey()
+                        + " block:" + totalBlocks
+                        + " filename:" + filename + ",line:" + j);
+            }
+            totalCompressionTime.get(key).add(encodingDuration / TIME_PRECISION);
+            totalDecompressionTime.get(key).add(decodingDuration / TIME_PRECISION);
+            key2TotalSize.put(key, aptCompressor.getSize() + key2TotalSize.get(key));
+        }
+
+        for (Map.Entry<String, Long> kv : key2TotalSize.entrySet()) {
+            String key = kv.getKey();
+            Long totalSize = kv.getValue();
+            ResultStructure r = new ResultStructure(filename, key,
+                    totalSize / (totalBlocks * blockSize * 64.0),
+                    totalCompressionTime.get(key),
+                    totalDecompressionTime.get(key)
+
+            );
+            if (!resultCompressor.containsKey(key)) {
+                resultCompressor.put(key, new ArrayList<>());
+            }
+            resultCompressor.get(key).add(r);
+        }
     }
 
     private void testDecimalCompressor(String filename, Map<String, List<ResultStructure>> resultCompressor) throws IOException {

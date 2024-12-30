@@ -76,7 +76,7 @@ public class Decimal {
             } else {
                 isNegative = false;
             }
-            validData = Math.abs(num);
+            validData = num;
         }
 
     }

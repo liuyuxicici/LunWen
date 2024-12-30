@@ -29,7 +29,6 @@ public abstract class AbstractDecimalCompressor implements ICompressor {
     public int compressValue(DecimalSeries data) {
         // 1、数据采样，取出分布最多的数据最低有效位
         int dataSize = data.getSize();
-//        out.writeInt(dataSize, 20);
         writeInt(dataSize, 20);
         size += 20;
         leastSignificantPos = data.getLastDigitIndex();
@@ -49,7 +48,7 @@ public abstract class AbstractDecimalCompressor implements ICompressor {
         }
         // 5、前缀偏移压缩
         size += getXorSize();
-        // 5、结束压缩，关闭输出流
+        // 6、结束压缩，关闭输出流
         close();
 
 
